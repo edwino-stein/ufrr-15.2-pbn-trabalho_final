@@ -1,0 +1,19 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/build
+/captures
+.~lock.*
+.o
+*~
+
+#############################
+# Arquivos Gerados pelo OSX #
+#############################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
