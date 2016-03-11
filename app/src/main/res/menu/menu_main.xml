@@ -2,6 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.stein.edwino.minhagasolina.MainActivity">
+
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title="Atualizar"
+        app:showAsAction="ifRoom"
+        />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

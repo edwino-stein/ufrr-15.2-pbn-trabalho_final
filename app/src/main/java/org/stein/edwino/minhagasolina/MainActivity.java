@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     private FloatingActionButton floatingActionButton;
     private RecyclerView recyclerView;
 
+    private Abastecimento[] abastecimentosData;
+    private int tabbedReady;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.tabbedReady = 0;
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this);
         viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -52,11 +56,18 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {onFloatingActionButtonClicked(view);}
         });
+    }
 
+    protected void onStart(){
+        super.onStart();
+
+        if(this.abastecimentosData != null){
+            this.updateRecyclerView();
+        }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("result", String.valueOf(requestCode) + " - " + String.valueOf(resultCode));
 
         switch (requestCode) {
@@ -74,19 +85,18 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
                     }
 
                     int total = jsonResponse.getTotal();
-                    Abastecimento[] abastecimentosData = new Abastecimento[total];
+                    this.abastecimentosData = new Abastecimento[total];
 
-                    for (int i = 0; i < total; i++){
-                        abastecimentosData[i] = Abastecimento.parseJson(jsonResponse.getData(i));
-                        Log.d("model", abastecimentosData[i].toString());
-                    }
+                    for (int i = 0; i < total; i++)
+                        this.abastecimentosData[i] = Abastecimento.parseJson(jsonResponse.getData(i));
+
+                    this.updateRecyclerView();
                 }
                 else{
                     Log.d("Request", "Falhou");
                 }
+
             break;
-
-
         }
 
     }
@@ -95,9 +105,8 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     /* ********************************* Comportamento dos menus ********************************* */
 
     public void onFloatingActionButtonClicked(View view){
-//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show();
-        this.readFromServer();
+        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     @Override
@@ -114,27 +123,41 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
             return true;
         }
 
+        if(id == R.id.action_refresh){
+            this.readFromServer();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
     /* ********************************** Comportamento das Abas ********************************* */
 
+    public void onAllTabsReady(){
+        this.readFromServer();
+    }
+
     @Override
     public void onTabActivityCreated(PlaceholderFragment fragment, int index) {
+
         if(index == SectionsPagerAdapter.ABASTECIMENTOS_TAB){
             this.recyclerView = ((AbastecimentosTab)fragment).recyclerView;
         }
+
     }
 
     @Override
     public void onTabStart(PlaceholderFragment fragment, int index){
 
+        this.tabbedReady++;
+
         if(index == SectionsPagerAdapter.ABASTECIMENTOS_TAB){
             AbastecimentosAdapter adapter = new AbastecimentosAdapter();
             this.recyclerView.setAdapter(adapter);
-
-
         }
+
+        if(this.tabbedReady >= this.sectionsPagerAdapter.getCount())
+            this.onAllTabsReady();
     }
 
     @Override
@@ -154,6 +177,11 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     public void startActivityForResult(Intent intent, int requestCode){
         intent.putExtra("requestCode", requestCode);
         super.startActivityForResult(intent, requestCode);
+    }
+
+    protected void updateRecyclerView(){
+        AbastecimentosAdapter adapter = new AbastecimentosAdapter(this.abastecimentosData);
+        this.recyclerView.setAdapter(adapter);
     }
 
     protected AbastecimentosAdapter getRecyclerViewAdapter(){
