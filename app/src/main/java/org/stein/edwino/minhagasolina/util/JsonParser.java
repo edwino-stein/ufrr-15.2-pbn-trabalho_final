@@ -3,7 +3,6 @@ package org.stein.edwino.minhagasolina.util;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.stein.edwino.minhagasolina.models.AbastractModel;
 
 
 public class JsonParser {

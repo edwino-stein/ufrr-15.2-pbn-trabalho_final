@@ -1,9 +1,5 @@
 package org.stein.edwino.minhagasolina.httprequest;
 
-/**
- * Created by edwino on 10/03/16.
- */
-
 public class HttpRequest {
     protected String uri;
 
