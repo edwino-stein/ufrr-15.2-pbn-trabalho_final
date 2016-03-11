@@ -6,19 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.stein.edwino.minhagasolina.R;
+import org.stein.edwino.minhagasolina.models.Abastecimento;
 
 import java.util.ArrayList;
 
 public class AbastecimentosAdapter extends RecyclerView.Adapter<AbastecimentosViewHolder>{
 
-    protected ArrayList<String> dataList;
+    protected ArrayList<Abastecimento> dataList;
 
     public AbastecimentosAdapter(){
-        this.dataList = new ArrayList<String>();
+        this.dataList = new ArrayList<Abastecimento>();
     }
 
-    public AbastecimentosAdapter(String data[]){
-        this.dataList = new ArrayList<String>();
+    public AbastecimentosAdapter(Abastecimento data[]){
+        this.dataList = new ArrayList<Abastecimento>();
         for(int i = 0; i < data.length; i++)
             this.dataList.add(data[i]);
     }
@@ -27,14 +28,14 @@ public class AbastecimentosAdapter extends RecyclerView.Adapter<AbastecimentosVi
     public AbastecimentosViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.abastecimentos_cardview, parent, false);
+                                      .inflate(R.layout.abastecimentos_cardview, parent, false);
 
         return new AbastecimentosViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(AbastecimentosViewHolder holder, int position) {
-        holder.teste.setText(this.dataList.get(position));
+//        holder.teste.setText(this.dataList.get(position));
     }
 
     @Override
@@ -47,24 +48,22 @@ public class AbastecimentosAdapter extends RecyclerView.Adapter<AbastecimentosVi
     }
 
 
-    public void addItem(String data){
+    public void addItem(Abastecimento data){
         this.addItem(data, this.dataList.size(), true);
     }
 
-    public void addItem(String data, int position){
+    public void addItem(Abastecimento data, int position){
         this.addItem(data, position, true);
     }
 
-    public void addItem(String data, boolean notify){
+    public void addItem(Abastecimento data, boolean notify){
         this.addItem(data, this.dataList.size(), notify);
     }
 
-    public void addItem(String data, int position, boolean notify){
+    public void addItem(Abastecimento data, int position, boolean notify){
         this.dataList.add(position, data);
         if(notify) this.notifyDataSetChanged();
     }
-
-
 
     public void removeItem(int position){
         this.removeItem(position, true);

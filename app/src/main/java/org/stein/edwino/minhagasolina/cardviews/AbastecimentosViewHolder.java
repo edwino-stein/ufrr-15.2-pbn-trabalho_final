@@ -13,6 +13,6 @@ public class AbastecimentosViewHolder extends RecyclerView.ViewHolder{
     public AbastecimentosViewHolder(View itemView) {
         super(itemView);
 
-        this.teste = (TextView) itemView.findViewById(R.id.teste);
+        //this.teste = (TextView) itemView.findViewById(R.id.teste);
     }
 }
