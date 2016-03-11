@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="5dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dp"
     >
 
     <RelativeLayout
@@ -19,27 +19,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Valor total gasto"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:id="@+id/textView2"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:id="@+id/valorTotalLabel"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="R$ 100,00"
-            android:id="@+id/textView"
+            android:text="R$ 000,00"
+            android:id="@+id/valorTotal"
             android:layout_marginTop="5dp"
-            android:layout_below="@+id/textView2"
-            android:layout_alignStart="@+id/textView2" />
+            android:layout_below="@+id/valorTotalLabel"
+            android:layout_alignStart="@+id/valorTotalLabel" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quantidade de combustível"
-            android:id="@+id/textView3"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
+            android:id="@+id/litrosLabel"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
 
@@ -47,57 +47,58 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="30,12 litros"
-            android:id="@+id/textView4"
+            android:text="00,00 litros"
+            android:id="@+id/litros"
             android:layout_marginTop="5dp"
-            android:layout_below="@+id/textView3"
-            android:layout_alignEnd="@+id/textView3"/>
+            android:layout_below="@+id/litrosLabel"
+            android:layout_alignEnd="@+id/litrosLabel"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="R$ 3,78"
-            android:id="@+id/textView6"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/textView"
-            android:layout_alignStart="@+id/textView2"/>
+            android:text="R$ 0,00"
+            android:id="@+id/precoLitro"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@+id/valorTotal"
+            android:layout_alignStart="@+id/valorTotalLabel"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="300,0 KM"
-            android:id="@+id/textView9"
+            android:text="000,0 KM"
+            android:id="@+id/quilometragem"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="20dp"
-            android:layout_alignTop="@+id/textView6"/>
+            android:layout_marginBottom="16dp"
+            android:layout_alignTop="@+id/precoLitro"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="dd/mm/aaaa"
-            android:id="@+id/textView10"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/textView"
-            android:layout_alignEnd="@+id/textView4" />
+            android:id="@+id/data"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@+id/valorTotal"
+            android:layout_alignEnd="@+id/litros" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@android:color/darker_gray"
-            android:id="@+id/view"
-            android:layout_marginTop="16dp"
-            android:layout_below="@+id/textView6"
+            android:id="@+id/separator"
+            android:layout_below="@+id/precoLitro"
             android:layout_alignParentEnd="true" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
+            android:id="@+id/editAbastecimento"
             android:src="@android:drawable/ic_menu_edit"
-            android:layout_alignTop="@+id/view"
+            android:layout_alignTop="@+id/separator"
             android:padding="5dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
@@ -110,13 +111,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:id="@+id/imageView2"
+            android:id="@+id/deleteAbastecimento"
             android:src="@android:drawable/ic_menu_delete"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:layout_alignTop="@+id/view"
-            android:layout_toStartOf="@+id/imageView"
+            android:layout_alignTop="@+id/separator"
+            android:layout_toStartOf="@+id/editAbastecimento"
             android:background="@android:color/transparent"/>
 
     </RelativeLayout>
