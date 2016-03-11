@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        useLibrary 'org.apache.http.legacy'
     }
 
     // This is handled for you by the 2.0+ Gradle Plugin
