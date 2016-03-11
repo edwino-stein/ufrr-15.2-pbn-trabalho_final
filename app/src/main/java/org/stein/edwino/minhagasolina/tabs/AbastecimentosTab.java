@@ -27,6 +27,13 @@ public class AbastecimentosTab extends PlaceholderFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
+        LinearLayoutManager llm = new LinearLayoutManager(this.context);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+
+        this.recyclerView = (RecyclerView) rootView.findViewById(R.id.abastecimentosList);
+        this.recyclerView.setHasFixedSize(true);
+        this.recyclerView.setLayoutManager(llm);
+
         return this.rootView;
     }
 }
