@@ -1,5 +1,7 @@
 package org.stein.edwino.minhagasolina;
 
+import android.content.Intent;
+import android.os.Debug;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,18 +24,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.stein.edwino.minhagasolina.cardviews.AbastecimentosAdapter;
+import org.stein.edwino.minhagasolina.models.Abastecimento;
 import org.stein.edwino.minhagasolina.tabs.AbastecimentosTab;
 import org.stein.edwino.minhagasolina.tabs.PlaceholderFragment;
 import org.stein.edwino.minhagasolina.tabs.SectionsPagerAdapter;
 import org.stein.edwino.minhagasolina.tabs.TabListener;
+import org.stein.edwino.minhagasolina.util.JsonParser;
 
 public class MainActivity extends AppCompatActivity implements TabListener, TabLayout.OnTabSelectedListener {
+
 
     private SectionsPagerAdapter sectionsPagerAdapter;
     private ViewPager viewPager;
     private FloatingActionButton floatingActionButton;
     private RecyclerView recyclerView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +62,49 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.d("result", String.valueOf(requestCode) + " - " + String.valueOf(resultCode));
+
+        switch (requestCode) {
+
+            case RequestActivity.READ_ABASTECIMENTOS:
+
+                if(resultCode == RESULT_OK){
+
+                    String response =  data.getStringExtra("response");
+                    JsonParser jsonResponse = new JsonParser(response);
+
+                    if(!jsonResponse.isSuccess()){
+                        Log.d("Request", "Falhou");
+                        return;
+                    }
+
+                    int total = jsonResponse.getTotal();
+                    Abastecimento[] abastecimentosData = new Abastecimento[total];
+
+                    for (int i = 0; i < total; i++){
+                        abastecimentosData[i] = Abastecimento.parseJson(jsonResponse.getData(i));
+                        Log.d("model", abastecimentosData[i].toString());
+                    }
+                }
+                else{
+                    Log.d("Request", "Falhou");
+                }
+            break;
+
+
+        }
+
+    }
+
+
     /* ********************************* Comportamento dos menus ********************************* */
 
     public void onFloatingActionButtonClicked(View view){
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show();
+        this.readFromServer();
     }
 
     @Override
@@ -95,15 +137,10 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     public void onTabStart(PlaceholderFragment fragment, int index){
 
         if(index == SectionsPagerAdapter.ABASTECIMENTOS_TAB){
-
             AbastecimentosAdapter adapter = new AbastecimentosAdapter();
             this.recyclerView.setAdapter(adapter);
 
-            for (int i = 0; i < 20; i++){
-                adapter.addItem("Teste "+String.valueOf(i), false);
-            }
 
-            adapter.notifyDataSetChanged();
         }
     }
 
@@ -120,8 +157,20 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
     /* ***************************************** Outros ****************************************** */
 
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode){
+        intent.putExtra("requestCode", requestCode);
+        super.startActivityForResult(intent, requestCode);
+    }
+
     protected AbastecimentosAdapter getRecyclerViewAdapter(){
         if(this.recyclerView == null) return null;
         return (AbastecimentosAdapter) this.recyclerView.getAdapter();
+    }
+
+    protected void readFromServer(){
+        Intent requestIntent = new Intent("org.stein.edwino.minhagasolina.RequestActivity");
+        requestIntent.putExtra("veiculo", 1);
+        this.startActivityForResult(requestIntent, RequestActivity.READ_ABASTECIMENTOS);
     }
 }
