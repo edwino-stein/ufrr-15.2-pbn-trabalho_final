@@ -28,9 +28,10 @@ public class JsonParser {
             this.errorMessage = "Parser error";
         }
 
-        this.setSuccess(jsonObj)
-                .setTotal(jsonObj)
-                .setData(jsonObj);
+        this.setSuccess(jsonObj);
+
+        if(this.success)
+            this.setTotal(jsonObj).setData(jsonObj);
     }
 
 
@@ -44,6 +45,10 @@ public class JsonParser {
 
     public JSONObject[] getData() {
         return data;
+    }
+
+    public JSONObject getOneData(){
+        return this.data[0];
     }
 
     public JSONObject getData(int index) {
@@ -92,10 +97,25 @@ public class JsonParser {
 
     public JsonParser setData(JSONObject jsonObj){
 
+
+        if(this.total < 0){
+            this.data = new JSONObject[1];
+
+            try {
+                this.data[0] = jsonObj.getJSONObject("data");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return this;
+        }
+
         JSONArray dataArray = null;
 
         try {
+
             dataArray = jsonObj.getJSONArray("data");
+
         } catch (JSONException e) {
             e.printStackTrace();
             this.errorFlag = true;
