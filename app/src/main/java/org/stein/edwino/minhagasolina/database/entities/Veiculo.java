@@ -5,8 +5,18 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import org.stein.edwino.minhagasolina.database.Entity;
+import org.stein.edwino.minhagasolina.models.VeiculoModel;
 
 public class Veiculo extends Entity {
+
+    public Veiculo(){}
+
+    public Veiculo(VeiculoModel veiculoModel){
+        this.id = -1;
+        this.serverId = veiculoModel.id;
+        this.descricao = veiculoModel.descricao;
+        this.quilometragem = veiculoModel.quilometragem;
+    }
 
     protected int id = -1;
     protected int serverId;
