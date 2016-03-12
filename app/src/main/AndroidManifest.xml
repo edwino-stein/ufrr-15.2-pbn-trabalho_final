@@ -29,6 +29,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".VeiculoActivity"
+            android:label="Registrar Veículo">
+            <intent-filter>
+                <action android:name="org.stein.edwino.minhagasolina.VeiculoActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
