@@ -31,7 +31,8 @@
         </activity>
         <activity
             android:name=".VeiculoActivity"
-            android:label="Registrar Veículo">
+            android:label="Registrar Veículo"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
             <intent-filter>
                 <action android:name="org.stein.edwino.minhagasolina.VeiculoActivity" />
                 <category android:name="android.intent.category.DEFAULT" />

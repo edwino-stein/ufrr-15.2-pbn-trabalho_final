@@ -17,7 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.stein.edwino.minhagasolina.cardviews.AbastecimentosAdapter;
+import org.stein.edwino.minhagasolina.database.DataBase;
+import org.stein.edwino.minhagasolina.database.Entity;
+import org.stein.edwino.minhagasolina.database.entities.Veiculo;
 import org.stein.edwino.minhagasolina.models.Abastecimento;
+import org.stein.edwino.minhagasolina.models.VeiculoModel;
 import org.stein.edwino.minhagasolina.tabs.AbastecimentosTab;
 import org.stein.edwino.minhagasolina.tabs.PlaceholderFragment;
 import org.stein.edwino.minhagasolina.tabs.SectionsPagerAdapter;
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     private RecyclerView recyclerView;
 
     private Abastecimento[] abastecimentosData;
+    private DataBase dataBaseVeiculos;
     private int tabbedReady;
 
     @Override
@@ -54,12 +59,21 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {onFloatingActionButtonClicked(view);}
+            public void onClick(View view) {
+                onFloatingActionButtonClicked(view);
+            }
         });
+
+        this.dataBaseVeiculos = new DataBase(this, "org.stein.edwino.minhagasolina.database.entities.Veiculo");
     }
 
     protected void onStart(){
         super.onStart();
+
+        Veiculo veiculo = this.getVeiculo();
+        if(veiculo == null){
+            this.requestVeiculo(true);
+        }
 
         if(this.abastecimentosData != null){
             this.updateRecyclerView();
@@ -97,6 +111,68 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
                 }
 
             break;
+
+            case RequestActivity.CREATE_VEICULO:
+
+                if(resultCode != RESULT_OK)
+                    Log.d("Request", "Falhou");
+
+                String response =  data.getStringExtra("response");
+                JsonParser jsonResponse = new JsonParser(response);
+
+                if(!jsonResponse.isSuccess()){
+                    Log.d("Request", "Falhou");
+                    return;
+                }
+
+                Veiculo veiculo = new Veiculo(VeiculoModel.parseJson(jsonResponse.getOneData()));
+                this.dataBaseVeiculos.insert(veiculo);
+                this.readFromServer(veiculo);
+
+            break;
+
+            case RequestActivity.READ_VEICULO:
+
+                if(resultCode != RESULT_OK)
+                    Log.d("Request", "Falhou");
+
+                String response2 =  data.getStringExtra("response");
+
+                Log.d("teste", response2);
+                JsonParser jsonResponse2 = new JsonParser(response2);
+
+                if(!jsonResponse2.isSuccess()){
+                    Log.d("Request", "Falhou");
+                    return;
+                }
+
+                Veiculo veiculo2 = new Veiculo(VeiculoModel.parseJson(jsonResponse2.getOneData()));
+                this.dataBaseVeiculos.insert(veiculo2);
+                this.readFromServer(veiculo2);
+
+            break;
+
+            case VeiculoActivity.VEICULO_REQUEST:
+
+                if(resultCode != RESULT_OK) return;
+
+                boolean isNovo = data.getBooleanExtra("isNovo", false);
+
+                if(isNovo){
+
+                    Intent requestIntent = new Intent("org.stein.edwino.minhagasolina.RequestActivity");
+                    requestIntent.putExtra("descricao", data.getStringExtra("descricao"));
+                    requestIntent.putExtra("quilometragem", data.getFloatExtra("quilometragem", 0));
+                    this.startActivityForResult(requestIntent, RequestActivity.CREATE_VEICULO);
+                }
+                else{
+
+                    Intent requestIntent = new Intent("org.stein.edwino.minhagasolina.RequestActivity");
+                    requestIntent.putExtra("codigo", data.getStringExtra("codigo"));
+                    this.startActivityForResult(requestIntent, RequestActivity.READ_VEICULO);
+                }
+
+            break;
         }
 
     }
@@ -124,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         }
 
         if(id == R.id.action_refresh){
-            this.readFromServer();
+            this.readFromServer(this.getVeiculo());
             return true;
         }
 
@@ -134,7 +210,12 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     /* ********************************** Comportamento das Abas ********************************* */
 
     public void onAllTabsReady(){
-        this.readFromServer();
+        Veiculo veiculo = this.getVeiculo();
+
+        if(veiculo != null){
+            this.readFromServer(veiculo);
+        }
+
     }
 
     @Override
@@ -189,9 +270,30 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         return (AbastecimentosAdapter) this.recyclerView.getAdapter();
     }
 
-    protected void readFromServer(){
+    protected void requestVeiculo(boolean force){
+        Intent requestIntent = new Intent("org.stein.edwino.minhagasolina.VeiculoActivity");
+        requestIntent.putExtra("force", force);
+        this.startActivityForResult(requestIntent, VeiculoActivity.VEICULO_REQUEST);
+    }
+
+    protected void readFromServer(Veiculo veiculo){
+
+        if(veiculo == null) return;
+
         Intent requestIntent = new Intent("org.stein.edwino.minhagasolina.RequestActivity");
-        requestIntent.putExtra("veiculo", 1);
+
+        requestIntent.putExtra("veiculo", veiculo.getServerId());
         this.startActivityForResult(requestIntent, RequestActivity.READ_ABASTECIMENTOS);
+    }
+
+    protected Veiculo getVeiculo(){
+
+        Entity[] data = this.dataBaseVeiculos.fetchAll();
+
+        if(data.length > 0){
+            return (Veiculo) data[0];
+        }
+
+        return null;
     }
 }
