@@ -17,13 +17,4 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!-- Correção da posição da appbar -->
-    <style name="AppBarFix" ></style>
-
-    <style name="ToolBarFix" >
-        <item name="android:layout_height">?attr/actionBarSize</item>
-    </style>
-
-    <style name="ContainerFix"></style>
-
 </resources>
