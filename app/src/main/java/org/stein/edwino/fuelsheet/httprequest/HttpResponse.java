@@ -1,4 +1,4 @@
-package org.stein.edwino.minhagasolina.httprequest;
+package org.stein.edwino.fuelsheet.httprequest;
 
 import org.apache.http.HttpStatus;
 

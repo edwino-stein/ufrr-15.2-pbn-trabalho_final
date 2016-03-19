@@ -1,4 +1,4 @@
-package org.stein.edwino.minhagasolina.tabs;
+package org.stein.edwino.fuelsheet.tabs;
 
 
 public interface TabListener {

@@ -1,10 +1,10 @@
-package org.stein.edwino.minhagasolina.tabs;
+package org.stein.edwino.fuelsheet.tabs;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.stein.edwino.minhagasolina.R;
+import org.stein.edwino.fuelsheet.R;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 

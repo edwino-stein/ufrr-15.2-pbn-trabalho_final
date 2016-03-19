@@ -1,4 +1,4 @@
-package org.stein.edwino.minhagasolina;
+package org.stein.edwino.fuelsheet;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

@@ -1,11 +1,11 @@
-package org.stein.edwino.minhagasolina.database.entities;
+package org.stein.edwino.fuelsheet.database.entities;
 
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import org.stein.edwino.minhagasolina.database.Entity;
-import org.stein.edwino.minhagasolina.models.VeiculoModel;
+import org.stein.edwino.fuelsheet.database.Entity;
+import org.stein.edwino.fuelsheet.models.VeiculoModel;
 
 public class Veiculo extends Entity {
 

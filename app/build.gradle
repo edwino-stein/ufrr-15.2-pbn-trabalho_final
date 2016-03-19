@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "org.stein.edwino.minhagasolina"
+        applicationId "org.stein.edwino.fuelsheet"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1

@@ -1,4 +1,4 @@
-package org.stein.edwino.minhagasolina.database;
+package org.stein.edwino.fuelsheet.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;

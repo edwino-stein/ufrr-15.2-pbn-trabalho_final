@@ -1,14 +1,11 @@
-package org.stein.edwino.minhagasolina.cardviews;
+package org.stein.edwino.fuelsheet.cardviews;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.TextView;
 
-import org.stein.edwino.minhagasolina.R;
+import org.stein.edwino.fuelsheet.R;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

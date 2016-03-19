@@ -1,4 +1,4 @@
-package org.stein.edwino.minhagasolina.models;
+package org.stein.edwino.fuelsheet.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;

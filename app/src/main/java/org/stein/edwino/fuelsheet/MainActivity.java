@@ -1,7 +1,6 @@
-package org.stein.edwino.minhagasolina;
+package org.stein.edwino.fuelsheet;
 
 import android.content.Intent;
-import android.os.Debug;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,17 +15,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.stein.edwino.minhagasolina.cardviews.AbastecimentosAdapter;
-import org.stein.edwino.minhagasolina.database.DataBase;
-import org.stein.edwino.minhagasolina.database.Entity;
-import org.stein.edwino.minhagasolina.database.entities.Veiculo;
-import org.stein.edwino.minhagasolina.models.Abastecimento;
-import org.stein.edwino.minhagasolina.models.VeiculoModel;
-import org.stein.edwino.minhagasolina.tabs.AbastecimentosTab;
-import org.stein.edwino.minhagasolina.tabs.PlaceholderFragment;
-import org.stein.edwino.minhagasolina.tabs.SectionsPagerAdapter;
-import org.stein.edwino.minhagasolina.tabs.TabListener;
-import org.stein.edwino.minhagasolina.util.JsonParser;
+import org.stein.edwino.fuelsheet.cardviews.AbastecimentosAdapter;
+import org.stein.edwino.fuelsheet.database.DataBase;
+import org.stein.edwino.fuelsheet.database.Entity;
+import org.stein.edwino.fuelsheet.database.entities.Veiculo;
+import org.stein.edwino.fuelsheet.models.Abastecimento;
+import org.stein.edwino.fuelsheet.models.VeiculoModel;
+import org.stein.edwino.fuelsheet.tabs.AbastecimentosTab;
+import org.stein.edwino.fuelsheet.tabs.PlaceholderFragment;
+import org.stein.edwino.fuelsheet.tabs.SectionsPagerAdapter;
+import org.stein.edwino.fuelsheet.tabs.TabListener;
+import org.stein.edwino.fuelsheet.util.JsonParser;
 
 public class MainActivity extends AppCompatActivity implements TabListener, TabLayout.OnTabSelectedListener {
 
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
             }
         });
 
-        this.dataBaseVeiculos = new DataBase(this, "org.stein.edwino.minhagasolina.database.entities.Veiculo");
+        this.dataBaseVeiculos = new DataBase(this, "org.stein.edwino.fuelsheet.database.entities.Veiculo");
     }
 
     protected void onStart(){
@@ -160,14 +159,14 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
                 if(isNovo){
 
-                    Intent requestIntent = new Intent("org.stein.edwino.minhagasolina.RequestActivity");
+                    Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.RequestActivity");
                     requestIntent.putExtra("descricao", data.getStringExtra("descricao"));
                     requestIntent.putExtra("quilometragem", data.getFloatExtra("quilometragem", 0));
                     this.startActivityForResult(requestIntent, RequestActivity.CREATE_VEICULO);
                 }
                 else{
 
-                    Intent requestIntent = new Intent("org.stein.edwino.minhagasolina.RequestActivity");
+                    Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.RequestActivity");
                     requestIntent.putExtra("codigo", data.getStringExtra("codigo"));
                     this.startActivityForResult(requestIntent, RequestActivity.READ_VEICULO);
                 }
@@ -271,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     }
 
     protected void requestVeiculo(boolean force){
-        Intent requestIntent = new Intent("org.stein.edwino.minhagasolina.VeiculoActivity");
+        Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.VeiculoActivity");
         requestIntent.putExtra("force", force);
         this.startActivityForResult(requestIntent, VeiculoActivity.VEICULO_REQUEST);
     }
@@ -280,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
         if(veiculo == null) return;
 
-        Intent requestIntent = new Intent("org.stein.edwino.minhagasolina.RequestActivity");
+        Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.RequestActivity");
 
         requestIntent.putExtra("veiculo", veiculo.getServerId());
         this.startActivityForResult(requestIntent, RequestActivity.READ_ABASTECIMENTOS);

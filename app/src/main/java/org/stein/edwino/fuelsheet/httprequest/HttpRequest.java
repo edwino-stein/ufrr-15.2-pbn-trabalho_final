@@ -1,4 +1,4 @@
-package org.stein.edwino.minhagasolina.httprequest;
+package org.stein.edwino.fuelsheet.httprequest;
 
 public class HttpRequest {
     protected String uri;

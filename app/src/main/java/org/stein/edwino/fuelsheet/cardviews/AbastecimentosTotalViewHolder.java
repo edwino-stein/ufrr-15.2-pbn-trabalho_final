@@ -1,14 +1,10 @@
-package org.stein.edwino.minhagasolina.cardviews;
+package org.stein.edwino.fuelsheet.cardviews;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import org.stein.edwino.minhagasolina.R;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.stein.edwino.fuelsheet.R;
 
 public class AbastecimentosTotalViewHolder extends RecyclerView.ViewHolder{
 

@@ -1,4 +1,4 @@
-package org.stein.edwino.minhagasolina.util;
+package org.stein.edwino.fuelsheet.util;
 
 import org.json.JSONArray;
 import org.json.JSONException;

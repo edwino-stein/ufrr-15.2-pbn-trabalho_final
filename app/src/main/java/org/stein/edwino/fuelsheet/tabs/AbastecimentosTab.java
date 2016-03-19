@@ -1,4 +1,4 @@
-package org.stein.edwino.minhagasolina.tabs;
+package org.stein.edwino.fuelsheet.tabs;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.stein.edwino.minhagasolina.R;
+import org.stein.edwino.fuelsheet.R;
 
 public class AbastecimentosTab extends PlaceholderFragment {
 

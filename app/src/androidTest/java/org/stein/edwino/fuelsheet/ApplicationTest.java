@@ -1,4 +1,4 @@
-package org.stein.edwino.minhagasolina;
+package org.stein.edwino.fuelsheet;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

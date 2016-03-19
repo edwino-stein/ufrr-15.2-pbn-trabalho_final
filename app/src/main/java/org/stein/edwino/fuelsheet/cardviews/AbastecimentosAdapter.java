@@ -1,14 +1,12 @@
-package org.stein.edwino.minhagasolina.cardviews;
+package org.stein.edwino.fuelsheet.cardviews;
 
-import android.os.Debug;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.stein.edwino.minhagasolina.R;
-import org.stein.edwino.minhagasolina.models.Abastecimento;
+import org.stein.edwino.fuelsheet.R;
+import org.stein.edwino.fuelsheet.models.Abastecimento;
 
 import java.util.ArrayList;
 
