@@ -19,10 +19,12 @@ import org.stein.edwino.fuelsheet.cardviews.AbastecimentosAdapter;
 import org.stein.edwino.fuelsheet.database.DataBase;
 import org.stein.edwino.fuelsheet.database.Entity;
 import org.stein.edwino.fuelsheet.database.entities.Veiculo;
+import org.stein.edwino.fuelsheet.cardviews.RelatorioAdapter;
 import org.stein.edwino.fuelsheet.models.Abastecimento;
 import org.stein.edwino.fuelsheet.models.VeiculoModel;
 import org.stein.edwino.fuelsheet.tabs.AbastecimentosTab;
 import org.stein.edwino.fuelsheet.tabs.PlaceholderFragment;
+import org.stein.edwino.fuelsheet.tabs.RelatorioTab;
 import org.stein.edwino.fuelsheet.tabs.SectionsPagerAdapter;
 import org.stein.edwino.fuelsheet.tabs.TabListener;
 import org.stein.edwino.fuelsheet.util.JsonParser;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     private ViewPager viewPager;
     private FloatingActionButton floatingActionButton;
     private RecyclerView recyclerView;
+    private RecyclerView resumoRecyclerView;
 
     private Abastecimento[] abastecimentosData;
     private DataBase dataBaseVeiculos;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setOnTabSelectedListener(this);
 
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
                 onFloatingActionButtonClicked(view);
             }
         });
+        floatingActionButton.hide();
 
         this.dataBaseVeiculos = new DataBase(this, "org.stein.edwino.fuelsheet.database.entities.Veiculo");
     }
@@ -214,7 +219,6 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         if(veiculo != null){
             this.readFromServer(veiculo);
         }
-
     }
 
     @Override
@@ -222,6 +226,10 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
         if(index == SectionsPagerAdapter.ABASTECIMENTOS_TAB){
             this.recyclerView = ((AbastecimentosTab)fragment).recyclerView;
+        }
+
+        if(index == SectionsPagerAdapter.RELATORIO_TAB){
+            this.resumoRecyclerView = ((RelatorioTab)fragment).recyclerView;
         }
 
     }
@@ -236,13 +244,23 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
             this.recyclerView.setAdapter(adapter);
         }
 
+        if(index == SectionsPagerAdapter.RELATORIO_TAB){
+            this.resumoRecyclerView.setAdapter(new RelatorioAdapter(RelatorioAdapter.createTemplate()));
+        }
+
         if(this.tabbedReady >= this.sectionsPagerAdapter.getCount())
             this.onAllTabsReady();
     }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        Log.d("Tab", String.valueOf(tab.getPosition()));
+
+        if(tab.getPosition() == SectionsPagerAdapter.RESUMO_TAB)
+            this.floatingActionButton.hide();
+        else
+            this.floatingActionButton.show();
+
+        this.viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
@@ -267,6 +285,11 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     protected AbastecimentosAdapter getRecyclerViewAdapter(){
         if(this.recyclerView == null) return null;
         return (AbastecimentosAdapter) this.recyclerView.getAdapter();
+    }
+
+    protected RelatorioAdapter getResumoRecyclerViewAdapter(){
+        if(this.resumoRecyclerView == null) return null;
+        return (RelatorioAdapter) this.resumoRecyclerView.getAdapter();
     }
 
     protected void requestVeiculo(boolean force){
