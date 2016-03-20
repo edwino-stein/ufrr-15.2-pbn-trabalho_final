@@ -276,9 +276,16 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
     public void updateReport(){
 
-        ReportResult report = JavaReport.calc(this.abastecimentosData);
-        RelatorioAdapter adapter = this.getResumoRecyclerViewAdapter();
         Veiculo veiculo = this.getVeiculo();
+        RelatorioAdapter adapter = this.getResumoRecyclerViewAdapter();
+
+        if(veiculo == null || this.abastecimentosData == null || this.abastecimentosData.length <= 0){
+            this.setRelatorioInicial(true);
+            return;
+        }
+
+        this.setRelatorioInicial(false);
+        ReportResult report = JavaReport.calc(this.abastecimentosData);
 
         adapter.getItem(RelatorioAdapter.ULTIMO_ABASTECIMENTO).setData(ReportResult.formatData(report.ultimo));
 
@@ -304,6 +311,10 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         adapter.getItem(RelatorioAdapter.PROXIMO_ABASTECIMENTO).setData(ReportResult.formatFloat(report.proximo)+" km");
 
         adapter.notifyDataSetChanged();
+    }
+
+    protected void setRelatorioInicial(boolean inicial){
+        ((RelatorioTab) this.sectionsPagerAdapter.getItem(SectionsPagerAdapter.RELATORIO_TAB)).setInicial(inicial);
     }
 
     @Override

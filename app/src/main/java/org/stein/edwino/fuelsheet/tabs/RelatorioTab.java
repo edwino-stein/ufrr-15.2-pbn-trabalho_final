@@ -7,11 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.stein.edwino.fuelsheet.R;
 
 public class RelatorioTab extends PlaceholderFragment {
 
+    public TextView inicialMenssage;
     public RecyclerView recyclerView;
 
     public RelatorioTab(){
@@ -34,6 +36,21 @@ public class RelatorioTab extends PlaceholderFragment {
         this.recyclerView.setHasFixedSize(true);
         this.recyclerView.setLayoutManager(llm);
 
+        this.inicialMenssage = (TextView) rootView.findViewById(R.id.inicialMenssage);
+
         return this.rootView;
+    }
+
+    public void setInicial(boolean inicial){
+
+        if(inicial) {
+            this.recyclerView.setVisibility(View.GONE);
+            this.inicialMenssage.setVisibility(View.VISIBLE);
+        }
+        else{
+            this.recyclerView.setVisibility(View.VISIBLE);
+            this.inicialMenssage.setVisibility(View.GONE);
+        }
+
     }
 }
