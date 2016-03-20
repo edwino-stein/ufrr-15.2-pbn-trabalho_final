@@ -27,7 +27,9 @@ import org.stein.edwino.fuelsheet.tabs.PlaceholderFragment;
 import org.stein.edwino.fuelsheet.tabs.RelatorioTab;
 import org.stein.edwino.fuelsheet.tabs.SectionsPagerAdapter;
 import org.stein.edwino.fuelsheet.tabs.TabListener;
+import org.stein.edwino.fuelsheet.util.JavaReport;
 import org.stein.edwino.fuelsheet.util.JsonParser;
+import org.stein.edwino.fuelsheet.util.ReportResult;
 
 public class MainActivity extends AppCompatActivity implements TabListener, TabLayout.OnTabSelectedListener {
 
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
                         this.abastecimentosData[i] = Abastecimento.parseJson(jsonResponse.getData(i));
 
                     this.updateRecyclerView();
+                    this.updateReport();
                 }
                 else{
                     Log.d("Request", "Falhou");
@@ -255,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
 
-        if(tab.getPosition() == SectionsPagerAdapter.RESUMO_TAB)
+        if(tab.getPosition() == SectionsPagerAdapter.RELATORIO_TAB)
             this.floatingActionButton.hide();
         else
             this.floatingActionButton.show();
@@ -270,6 +273,38 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     public void onTabReselected(TabLayout.Tab tab) {}
 
     /* ***************************************** Outros ****************************************** */
+
+    public void updateReport(){
+
+        ReportResult report = JavaReport.calc(this.abastecimentosData);
+        RelatorioAdapter adapter = this.getResumoRecyclerViewAdapter();
+        Veiculo veiculo = this.getVeiculo();
+
+        adapter.getItem(RelatorioAdapter.ULTIMO_ABASTECIMENTO).setData(ReportResult.formatData(report.ultimo));
+
+        adapter.getItem(RelatorioAdapter.MAIOR_VALOR_ABASTECIMENTO).setData("R$ "+ReportResult.formatFloat(report.maiorValor));
+        adapter.getItem(RelatorioAdapter.MENOR_VALOR_ABASTECIMENTO).setData("R$ "+ReportResult.formatFloat(report.menorValor));
+        adapter.getItem(RelatorioAdapter.TOTAL_VALOR_ABASTECIMENTO).setData("R$ "+ReportResult.formatFloat(report.totalValor));
+        adapter.getItem(RelatorioAdapter.MEDIA_VALOR_ABSTECIMENTO).setData("R$ "+ReportResult.formatFloat(report.mediaValor));
+
+        adapter.getItem(RelatorioAdapter.MAIOR_QUANTIDADE_COMBUSTIVEL).setData(ReportResult.formatFloat(report.maiorLitros)+" litros");
+        adapter.getItem(RelatorioAdapter.MENOR_QUANTIDADE_COMBUSTIVEL).setData(ReportResult.formatFloat(report.menorLitros)+" litros");
+        adapter.getItem(RelatorioAdapter.MEDIA_QUANTIDADE_COMBUSTIVEL).setData(ReportResult.formatFloat(report.menorLitros)+" litros");
+
+        adapter.getItem(RelatorioAdapter.MAIOR_PRECO).setData("R$ "+ReportResult.formatFloat(report.maiorPreco)+" por litro");
+        adapter.getItem(RelatorioAdapter.MENOR_PRECO).setData("R$ "+ReportResult.formatFloat(report.menorPreco)+" por litro");
+        adapter.getItem(RelatorioAdapter.MEDIA_PRECO).setData("R$ "+ReportResult.formatFloat(report.mediaPreco)+" por litro");
+
+        adapter.getItem(RelatorioAdapter.QUILOMETROS_RODADOS).setData(ReportResult.formatFloat(report.quilometrosMes)+" km");
+        adapter.getItem(RelatorioAdapter.QUILOMETROS_RODADOS_TOTAL).setData(ReportResult.formatFloat(veiculo.getQuilometragem() + report.quilometrosTotal)+" km");
+
+        adapter.getItem(RelatorioAdapter.MEDIA_REDIMENTO_MES).setData(ReportResult.formatFloat(report.rendimentoMes)+" km por litro");
+        adapter.getItem(RelatorioAdapter.MEDIA_REDIMENTO_TOTAL).setData(ReportResult.formatFloat(report.rendimentoTotal)+" km por litro");
+
+        adapter.getItem(RelatorioAdapter.PROXIMO_ABASTECIMENTO).setData(ReportResult.formatFloat(report.proximo)+" km");
+
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode){
