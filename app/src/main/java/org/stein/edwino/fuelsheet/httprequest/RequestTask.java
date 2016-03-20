@@ -1,6 +1,8 @@
 package org.stein.edwino.fuelsheet.httprequest;
 
 import android.os.AsyncTask;
+import android.os.Debug;
+import android.util.Log;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -21,6 +23,7 @@ public class RequestTask extends AsyncTask<HttpRequest, HttpResponse, HttpRespon
 
         HttpClient httpclient = new DefaultHttpClient();
         HttpResponse response = new HttpResponse();
+        Log.d("RequestUrl", this.request.getUri());
 
         try {
 
@@ -40,8 +43,10 @@ public class RequestTask extends AsyncTask<HttpRequest, HttpResponse, HttpRespon
                 throw new IOException(response.originalResponse.getStatusLine().getReasonPhrase());
             }
         } catch (ClientProtocolException e) {
+            Log.d("RequestErro", e.toString());
             e.printStackTrace();
         } catch (IOException e) {
+            Log.d("RequestErro", e.toString());
             e.printStackTrace();
         }
 
