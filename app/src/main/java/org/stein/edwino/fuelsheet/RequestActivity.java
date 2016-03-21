@@ -21,7 +21,7 @@ public class RequestActivity extends Activity implements HttpCallback {
     public static final String ABASTECIMENTOS_READ_URI = "?controller=abastecimentos&action=read&veiculo={veiculo}";
     public static final String VEICULO_CREATE_URI = "?controller=veiculos&action=create&descricao={descricao}&quilometragem={quilometragem}";
     public static final String VEICULO_READ_URI = "?controller=veiculos&action=read&id={veiculo}";
-    public static final String CREATE_OR_UPDATE_ABASTECIMENTO_URI = "?controller=abastecimentos&action={action}&veiculo={veiculo}&data={data}&valorTotal={valorTotal}&litros={litros}&precoLitro={precoLitro}&quilometragem={quilometragem}";
+    public static final String CREATE_OR_UPDATE_ABASTECIMENTO_URI = "?controller=abastecimentos&action={action}&veiculo={veiculo}&id={id}&data={data}&valorTotal={valorTotal}&litros={litros}&precoLitro={precoLitro}&quilometragem={quilometragem}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +122,7 @@ public class RequestActivity extends Activity implements HttpCallback {
         String action = model.getId() <= 0 ? "create" : "update";
         String uri = CREATE_OR_UPDATE_ABASTECIMENTO_URI.replace("{action}", action)
                                                        .replace("{veiculo}", String.valueOf(model.getVeiculo()))
+                                                       .replace("{id}", String.valueOf(model.getId()))
                                                        .replace("{data}", model.getStringData())
                                                        .replace("{valorTotal}", String.valueOf(model.getValorTotal()))
                                                        .replace("{litros}", String.valueOf(model.getLitros()))

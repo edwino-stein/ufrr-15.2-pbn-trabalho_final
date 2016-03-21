@@ -22,6 +22,7 @@ import java.util.Date;
 public class AbastecimentoFormActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final int CREATE_ABASTECIMENTO = 200;
+    public static final int UPDATE_ABASTECIMENTO = 201;
 
     private Abastecimento model;
     private int veiculoId;
@@ -44,7 +45,9 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abastecimento_form);
 
-        this.model = new Abastecimento();
+        this.model = this.getRequestCode() == UPDATE_ABASTECIMENTO ?
+                     (Abastecimento) getIntent().getSerializableExtra("model") : null;
+
         this.veiculoId = getIntent().getIntExtra("veiculo", 0);
 
         this.dateInput = (EditText) findViewById(R.id.dateInput);
@@ -72,6 +75,20 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
         this.submit.setOnClickListener(this);
     }
 
+
+    public void onStart(){
+        super.onStart();
+
+        if(this.getRequestCode() == UPDATE_ABASTECIMENTO){
+            Log.d("Update Data", this.model.toString());
+
+            this.setDateInputData(this.model.getData(), DATE_FORMAT_1);
+            this.kmTotalInput.setText(String.valueOf(this.model.getQuilometragem()));
+            this.preceFuelInput.setText(String.valueOf(this.model.getPrecoLitro()));
+            this.amountFuelInput.setText(String.valueOf(this.model.getLitros()));
+            this.totalPaymentInput.setText(String.valueOf(this.model.getValorTotal()));
+        }
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -219,20 +236,23 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
 
     protected void onSubmit(){
 
+        Abastecimento model = new Abastecimento();
 
-        this.model.setData(this.getDateInputValue(this.DATE_FORMAT_1));
-        this.model.setVeiculo(this.veiculoId);
+        model.setId(this.getRequestCode() == UPDATE_ABASTECIMENTO ? this.model.getId() : 0);
+        model.setData(this.getDateInputValue(this.DATE_FORMAT_1));
+        model.setVeiculo(this.veiculoId);
 
         try {
-            this.model.setQuilometragem(this.getKmTotalInputValue());
-            this.model.setPrecoLitro(this.getPreceFuelInputValue());
-            this.model.setLitros(this.getAmountFuelInputValue());
-            this.model.setValorTotal(this.getTotalPaymentInputValue());
+            model.setQuilometragem(this.getKmTotalInputValue());
+            model.setPrecoLitro(this.getPreceFuelInputValue());
+            model.setLitros(this.getAmountFuelInputValue());
+            model.setValorTotal(this.getTotalPaymentInputValue());
         } catch (FormException e) {
             Log.d("FormErro", e.getMessage());
+            return;
         }
 
-        Log.d("teste", "Mandar dados: " + model.toString());
+        Log.d("Form", "Mandar dados: " + model.toString());
         Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.RequestActivity");
         requestIntent.putExtra("model", model);
         startActivityForResult(requestIntent, RequestActivity.CREATE_OR_UPDATE_ABASTECIMENTO);
@@ -252,5 +272,9 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
     public void startActivityForResult(Intent intent, int requestCode){
         intent.putExtra("requestCode", requestCode);
         super.startActivityForResult(intent, requestCode);
+    }
+
+    protected int getRequestCode(){
+        return getIntent().getExtras().getInt("requestCode", -1);
     }
 }

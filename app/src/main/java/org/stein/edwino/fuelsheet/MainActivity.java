@@ -148,6 +148,24 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
             break;
 
+            case AbastecimentoFormActivity.UPDATE_ABASTECIMENTO:
+
+                if(resultCode != RESULT_OK){
+                    Log.d("Request", "Falhou");
+                    return;
+                }
+
+                Abastecimento updatedModel = (Abastecimento) data.getSerializableExtra("model");
+                this.abastecimentosData[0] = updatedModel;
+
+                this.updateRecyclerView();
+                this.updateReport();
+
+                Snackbar.make(this.floatingActionButton, "Abastecimento atualizado com sucesso.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            break;
+
             case RequestActivity.CREATE_VEICULO:
 
                 if(resultCode != RESULT_OK)
@@ -223,7 +241,10 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     }
 
     public void onUpdateAbastecimento(View view){
-        Log.d("teste", "onUpdateAbastecimento em Main");
+        Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.AbastecimentoFormActivity");
+        requestIntent.putExtra("model", this.abastecimentosData[0]);
+        requestIntent.putExtra("veiculo", this.getVeiculo().getId());
+        startActivityForResult(requestIntent, AbastecimentoFormActivity.UPDATE_ABASTECIMENTO);
     }
 
     public void onDeleteAbastecimento(View view){
