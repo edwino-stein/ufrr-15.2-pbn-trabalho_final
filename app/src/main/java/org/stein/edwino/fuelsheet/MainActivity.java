@@ -1,6 +1,7 @@
 package org.stein.edwino.fuelsheet;
 
 import android.content.Intent;
+import android.os.Debug;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
         if(this.abastecimentosData != null){
             this.updateRecyclerView();
+            this.updateReport();
         }
     }
 
@@ -188,8 +190,11 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     /* ********************************* Comportamento dos menus ********************************* */
 
     public void onFloatingActionButtonClicked(View view){
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show();
+
+        Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.AbastecimentoFormActivity");
+        startActivityForResult(requestIntent, AbastecimentoFormActivity.CREATE_ABASTECIMENTO);
     }
 
     @Override
@@ -217,9 +222,9 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     /* ********************************** Comportamento das Abas ********************************* */
 
     public void onAllTabsReady(){
-        Veiculo veiculo = this.getVeiculo();
 
-        if(veiculo != null){
+        Veiculo veiculo = this.getVeiculo();
+        if(veiculo != null && this.abastecimentosData == null){
             this.readFromServer(veiculo);
         }
     }

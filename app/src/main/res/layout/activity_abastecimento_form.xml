@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.stein.edwino.fuelsheet.AbastecimentoFormActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+
+
+            <TextView
+                style="@style/input_label"
+                android:text="Data:"
+                android:id="@+id/dateLabel"
+                />
+
+            <EditText
+                style="@style/input_text"
+                android:inputType="date"
+                android:id="@+id/dateInput" />
+
+            <TextView
+                style="@style/input_label"
+                android:text="Quilômetros rodados com o último tanque:"
+                android:id="@+id/kmTotalLabel"
+                />
+
+            <EditText
+                style="@style/input_text"
+                android:inputType="numberDecimal"
+                android:id="@+id/kmTotalInput" />
+
+            <TextView
+                style="@style/input_label"
+                android:text="Preço do combustível:"
+                android:id="@+id/priceFuelLabel"
+                />
+
+            <EditText
+                style="@style/input_text"
+                android:inputType="numberDecimal"
+                android:id="@+id/preceFuelInput" />
+
+            <TextView
+                style="@style/input_label"
+                android:text="Quantidade de combustível abastecidos:"
+                android:id="@+id/amountFuelLabel"
+                />
+
+            <EditText
+                style="@style/input_text"
+                android:inputType="numberDecimal"
+                android:id="@+id/amountFuelInput" />
+
+            <TextView
+                style="@style/input_label"
+                android:text="Valor total pago:"
+                android:id="@+id/totalPaymentLabel"
+                />
+
+            <EditText
+                style="@style/input_text"
+                android:inputType="numberDecimal"
+                android:id="@+id/totalPaymentInput" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:weightSum="1">
+
+                <Button
+                    style="@style/input_button"
+                    android:text="Salvar"
+                    android:id="@+id/submit"/>
+
+                <Button
+                    style="@style/input_button"
+                    android:text="Cancelar"
+                    android:id="@+id/cancel"
+                    android:onClick="onCancel"/>
+
+            </TableRow>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

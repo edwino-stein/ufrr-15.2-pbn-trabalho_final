@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="org.stein.edwino.fuelsheet.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,19 +22,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.stein.edwino.fuelsheet.RequestActivity"
+            android:name=".RequestActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
             <intent-filter>
                 <action android:name="org.stein.edwino.fuelsheet.RequestActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="org.stein.edwino.fuelsheet.VeiculoActivity"
+            android:name=".VeiculoActivity"
             android:label="Registrar Veículo"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
             <intent-filter>
                 <action android:name="org.stein.edwino.fuelsheet.VeiculoActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AbastecimentoFormActivity"
+            android:label="Registrar Abastecimento">
+            <intent-filter>
+                <action android:name="org.stein.edwino.fuelsheet.AbastecimentoFormActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
