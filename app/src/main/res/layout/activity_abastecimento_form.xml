@@ -22,7 +22,7 @@
 
             <TextView
                 style="@style/input_label"
-                android:text="Data:"
+                android:text="Data do abastecimento:"
                 android:id="@+id/dateLabel"
                 />
 
@@ -55,7 +55,7 @@
 
             <TextView
                 style="@style/input_label"
-                android:text="Quantidade de combustível abastecidos:"
+                android:text="Quantidade (litros) de combustível abastecidos:"
                 android:id="@+id/amountFuelLabel"
                 />
 
@@ -80,12 +80,12 @@
                 android:layout_height="75dp"
                 android:weightSum="1">
 
-                <Button
+                <android.support.v7.widget.AppCompatButton
                     style="@style/input_button"
                     android:text="Salvar"
                     android:id="@+id/submit"/>
 
-                <Button
+                <android.support.v7.widget.AppCompatButton
                     style="@style/input_button"
                     android:text="Cancelar"
                     android:id="@+id/cancel"
