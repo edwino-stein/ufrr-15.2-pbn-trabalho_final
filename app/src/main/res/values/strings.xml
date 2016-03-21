@@ -3,4 +3,11 @@
     <string name="action_settings">Settings</string>
     <string name="tab_abastecimentos">Abastecimentos</string>
     <string name="tab_relatorio">Relatório</string>
+    <string name="network_error_title">Problema de conexão</string>
+    <string name="network_error">Houve um erro durante a consulta com o servidor.\n\nVerifique se você está conectado a internet, ou tente novamente mais tarde.</string>
+    <string name="server_query_error_title">Problema na consulta com o servidor</string>
+    <string name="server_internal_error">Houve um erro interno no servidor.\n\nTente novamente mais tarde.</string>
+    <string name="created_abastecimento_success">Abastecimento registrado com sucesso.</string>
+    <string name="updated_abastecimento_success">Abastecimento alterado com sucesso.</string>
+    <string name="deleted_abastecimento_success">Abastecimento foi excluido com sucesso.</string>
 </resources>

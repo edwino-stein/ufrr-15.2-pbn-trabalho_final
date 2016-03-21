@@ -58,6 +58,11 @@ public class JsonParser {
 
     protected JsonParser setSuccess(JSONObject jsonObj){
 
+        if(this.errorFlag){
+            this.success = false;
+            return this;
+        }
+
         try {
 
             this.success = jsonObj.getBoolean("success");
@@ -78,6 +83,10 @@ public class JsonParser {
 
     public JsonParser setTotal(JSONObject jsonObj){
 
+        if(this.errorFlag){
+            return this;
+        }
+
         if(!jsonObj.has("total")) {
             return this;
         }
@@ -97,6 +106,9 @@ public class JsonParser {
 
     public JsonParser setData(JSONObject jsonObj){
 
+        if(this.errorFlag){
+            return this;
+        }
 
         if(this.total < 0){
             this.data = new JSONObject[1];
@@ -138,4 +150,15 @@ public class JsonParser {
         return this;
     }
 
+    public boolean hasError(){
+        return this.errorFlag;
+    }
+
+    public String getErrorMessage(){
+        return this.errorMessage;
+    }
+
+    public String getResponseMessage(){
+        return this.responseMessage;
+    }
 }

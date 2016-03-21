@@ -94,43 +94,51 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("result", String.valueOf(requestCode) + " - " + String.valueOf(resultCode));
+
+        Log.d("IntentResult", "requestCode: " + String.valueOf(requestCode) + ", IntentResultCode: " + String.valueOf(resultCode));
+
+        String response;
+        JsonParser jsonResponse;
 
         switch (requestCode) {
 
             case RequestActivity.READ_ABASTECIMENTOS:
 
-                if(resultCode == RESULT_OK){
-
-                    String response =  data.getStringExtra("response");
-                    JsonParser jsonResponse = new JsonParser(response);
-
-                    if(!jsonResponse.isSuccess()){
-                        Log.d("Request", "Falhou");
-                        return;
-                    }
-
-                    int total = jsonResponse.getTotal();
-                    this.abastecimentosData = new Abastecimento[total];
-
-                    for (int i = 0; i < total; i++)
-                        this.abastecimentosData[i] = Abastecimento.parseJson(jsonResponse.getData(i));
-
-                    this.updateRecyclerView();
-                    this.updateReport();
+                if(resultCode != RESULT_OK) {
+                    this.showDialogErro(
+                        getResources().getString(R.string.network_error_title),
+                        getResources().getString(R.string.network_error)
+                    );
+                    return;
                 }
-                else{
-                    Log.d("Request", "Falhou");
+
+                response = data.getStringExtra("response");
+                jsonResponse = new JsonParser(response);
+
+                if(!jsonResponse.isSuccess() || jsonResponse.hasError()){
+                    this.showDialogErro(
+                        getResources().getString(R.string.server_query_error_title),
+                        !jsonResponse.hasError() ?
+                            jsonResponse.getResponseMessage() :
+                            getResources().getString(R.string.server_internal_error)
+                    );
+                    return;
                 }
+
+                int total = jsonResponse.getTotal();
+                this.abastecimentosData = new Abastecimento[total];
+
+                for (int i = 0; i < total; i++)
+                    this.abastecimentosData[i] = Abastecimento.parseJson(jsonResponse.getData(i));
+
+                this.updateRecyclerView();
+                this.updateReport();
 
             break;
 
             case AbastecimentoFormActivity.CREATE_ABASTECIMENTO:
 
-                if(resultCode != RESULT_OK){
-                    Log.d("Request", "Falhou");
-                    return;
-                }
+                if(resultCode != RESULT_OK) return;
 
                 Abastecimento newModel = (Abastecimento) data.getSerializableExtra("model");
                 Abastecimento oldData[] = this.abastecimentosData;
@@ -145,17 +153,14 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
                 this.updateRecyclerView();
                 this.updateReport();
 
-                Snackbar.make(this.floatingActionButton, "Abastecimento registrado com sucesso.", Snackbar.LENGTH_LONG)
+                Snackbar.make(this.floatingActionButton, getResources().getString(R.string.created_abastecimento_success), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
             break;
 
             case AbastecimentoFormActivity.UPDATE_ABASTECIMENTO:
 
-                if(resultCode != RESULT_OK){
-                    Log.d("Request", "Falhou");
-                    return;
-                }
+                if(resultCode != RESULT_OK) return;
 
                 Abastecimento updatedModel = (Abastecimento) data.getSerializableExtra("model");
                 this.abastecimentosData[0] = updatedModel;
@@ -163,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
                 this.updateRecyclerView();
                 this.updateReport();
 
-                Snackbar.make(this.floatingActionButton, "Abastecimento atualizado com sucesso.", Snackbar.LENGTH_LONG)
+                Snackbar.make(this.floatingActionButton, getResources().getString(R.string.updated_abastecimento_success), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
             break;
@@ -171,7 +176,23 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
             case RequestActivity.DELETE_ABASTECIMENTO:
 
                 if(resultCode != RESULT_OK){
-                    Log.d("Request", "Falhou");
+                    this.showDialogErro(
+                        getResources().getString(R.string.network_error_title),
+                        getResources().getString(R.string.network_error)
+                    );
+                    return;
+                }
+
+                response = data.getStringExtra("response");
+                jsonResponse = new JsonParser(response);
+
+                if(!jsonResponse.isSuccess() || jsonResponse.hasError()){
+                    this.showDialogErro(
+                        getResources().getString(R.string.server_query_error_title),
+                        !jsonResponse.hasError() ?
+                            jsonResponse.getResponseMessage() :
+                            getResources().getString(R.string.server_internal_error)
+                    );
                     return;
                 }
 
@@ -185,47 +206,88 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
                 this.updateRecyclerView();
                 this.updateReport();
 
-                Snackbar.make(this.floatingActionButton, "Abastecimento foi excluido com sucesso.", Snackbar.LENGTH_LONG)
+                Snackbar.make(this.floatingActionButton, getResources().getString(R.string.deleted_abastecimento_success), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             break;
 
             case RequestActivity.CREATE_VEICULO:
 
-                if(resultCode != RESULT_OK)
-                    Log.d("Request", "Falhou");
+                if(resultCode != RESULT_OK){
+                    this.showDialogErro(
+                        getResources().getString(R.string.network_error_title),
+                        getResources().getString(R.string.network_error),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestVeiculo(true);
+                            }
+                        }
+                    );
+                    return;
+                }
 
-                String response =  data.getStringExtra("response");
-                JsonParser jsonResponse = new JsonParser(response);
+                response =  data.getStringExtra("response");
+                jsonResponse = new JsonParser(response);
 
-                if(!jsonResponse.isSuccess()){
-                    Log.d("Request", "Falhou");
+                if(!jsonResponse.isSuccess() || jsonResponse.hasError()){
+                    this.showDialogErro(
+                            getResources().getString(R.string.server_query_error_title),
+                            !jsonResponse.hasError() ?
+                                    jsonResponse.getResponseMessage() :
+                                    getResources().getString(R.string.server_internal_error),
+
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    requestVeiculo(true);
+                                }
+                            }
+                    );
+
+                    return;
+                }
+
+                Veiculo neweiculo = new Veiculo(VeiculoModel.parseJson(jsonResponse.getOneData()));
+                this.dataBaseVeiculos.insert(neweiculo);
+                this.readFromServer(neweiculo);
+
+            break;
+
+            case RequestActivity.READ_VEICULO:
+
+                if(resultCode != RESULT_OK){
+                    this.showDialogErro(
+                        getResources().getString(R.string.network_error_title),
+                        getResources().getString(R.string.network_error),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestVeiculo(true);
+                            }
+                        }
+                    );
+                    return;
+                }
+
+                response =  data.getStringExtra("response");
+                jsonResponse = new JsonParser(response);
+
+                if(!jsonResponse.isSuccess() || jsonResponse.hasError()){
+                    this.showDialogErro(
+                            getResources().getString(R.string.server_query_error_title),
+                            !jsonResponse.hasError() ?
+                                    jsonResponse.getResponseMessage() :
+                                    getResources().getString(R.string.server_internal_error),
+
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    requestVeiculo(true);
+                                }
+                            }
+                    );
                     return;
                 }
 
                 Veiculo veiculo = new Veiculo(VeiculoModel.parseJson(jsonResponse.getOneData()));
                 this.dataBaseVeiculos.insert(veiculo);
                 this.readFromServer(veiculo);
-
-            break;
-
-            case RequestActivity.READ_VEICULO:
-
-                if(resultCode != RESULT_OK)
-                    Log.d("Request", "Falhou");
-
-                String response2 =  data.getStringExtra("response");
-
-                Log.d("teste", response2);
-                JsonParser jsonResponse2 = new JsonParser(response2);
-
-                if(!jsonResponse2.isSuccess()){
-                    Log.d("Request", "Falhou");
-                    return;
-                }
-
-                Veiculo veiculo2 = new Veiculo(VeiculoModel.parseJson(jsonResponse2.getOneData()));
-                this.dataBaseVeiculos.insert(veiculo2);
-                this.readFromServer(veiculo2);
 
             break;
 
@@ -236,14 +298,12 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
                 boolean isNovo = data.getBooleanExtra("isNovo", false);
 
                 if(isNovo){
-
                     Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.RequestActivity");
                     requestIntent.putExtra("descricao", data.getStringExtra("descricao"));
                     requestIntent.putExtra("quilometragem", data.getFloatExtra("quilometragem", 0));
                     this.startActivityForResult(requestIntent, RequestActivity.CREATE_VEICULO);
                 }
                 else{
-
                     Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.RequestActivity");
                     requestIntent.putExtra("codigo", data.getStringExtra("codigo"));
                     this.startActivityForResult(requestIntent, RequestActivity.READ_VEICULO);
@@ -467,5 +527,21 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         }
 
         return null;
+    }
+
+    protected void showDialogErro(String title, String msg){
+        this.showDialogErro(title, msg, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+    }
+
+    protected void showDialogErro(String title, String msg, DialogInterface.OnClickListener onOk){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(title)
+                .setMessage(msg)
+                .setPositiveButton("OK", onOk)
+                .show();
     }
 }

@@ -1,6 +1,8 @@
 package org.stein.edwino.fuelsheet;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.stein.edwino.fuelsheet.exceptions.FormException;
 import org.stein.edwino.fuelsheet.models.Abastecimento;
@@ -98,15 +101,24 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
 
             case RequestActivity.CREATE_OR_UPDATE_ABASTECIMENTO:
 
-                if(resultCode != RESULT_OK)
-                    Log.d("Request", "Falhou");
-
+                if(resultCode != RESULT_OK) {
+                    this.showDialogErro(
+                        getResources().getString(R.string.network_error_title),
+                        getResources().getString(R.string.network_error)
+                    );
+                    return;
+                }
 
                 String response =  data.getStringExtra("response");
                 JsonParser jsonResponse = new JsonParser(response);
 
-                if(!jsonResponse.isSuccess()){
-                    Log.d("Request", "Falhou");
+                if(!jsonResponse.isSuccess() || jsonResponse.hasError()){
+                    this.showDialogErro(
+                        getResources().getString(R.string.server_query_error_title),
+                        !jsonResponse.hasError() ?
+                            jsonResponse.getResponseMessage() :
+                            getResources().getString(R.string.server_internal_error)
+                    );
                     return;
                 }
 
@@ -137,13 +149,13 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
         float fValue;
 
         if(sValue.length() <= 0){
-            throw new FormException("O campo Quilômetros rodados deve ser preenchido");
+            throw new FormException("O campo \"Quilômetros rodados com o último tanque\" deve ser preenchido.");
         }
 
         fValue = Float.valueOf(sValue);
 
         if(fValue <= 0){
-            throw new FormException("O campo Quilômetros rodados deve ser preenchido");
+            throw new FormException("O campo \"Quilômetros rodados com o último tanque\" deve ser preenchido.");
         }
 
         return fValue;
@@ -155,13 +167,13 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
         float fValue;
 
         if(sValue.length() <= 0){
-            throw new FormException("O campo Preço do combustível deve ser preenchido");
+            throw new FormException("O campo \"Preço do combustível\" deve ser preenchido.");
         }
 
         fValue = Float.valueOf(sValue);
 
         if(fValue <= 0){
-            throw new FormException("O campo Preço do combustível deve ser preenchido");
+            throw new FormException("O campo \"Preço do combustível\" deve ser preenchido.");
         }
 
         return fValue;
@@ -173,13 +185,13 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
         float fValue;
 
         if(sValue.length() <= 0){
-            throw new FormException("O campo Quantidade de combustível abastecidos deve ser preenchido");
+            throw new FormException("O campo \"Quantidade (litros) de combustível abastecidos\" deve ser preenchido.");
         }
 
         fValue = Float.valueOf(sValue);
 
         if(fValue <= 0){
-            throw new FormException("O campo Quantidade de combustível abastecidos deve ser preenchido");
+            throw new FormException("O campo \"Quantidade (litros) de combustível abastecidos\" deve ser preenchido.");
         }
 
         return fValue;
@@ -191,13 +203,13 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
         float fValue;
 
         if(sValue.length() <= 0){
-            throw new FormException("O campo Valor total pago deve ser preenchido");
+            throw new FormException("O campo \"Valor total pago\" deve ser preenchido.");
         }
 
         fValue = Float.valueOf(sValue);
 
         if(fValue <= 0){
-            throw new FormException("O campo Valor total pago deve ser preenchido");
+            throw new FormException("O campo \"Valor total pago\" deve ser preenchido.");
         }
 
         return fValue;
@@ -249,6 +261,7 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
             model.setValorTotal(this.getTotalPaymentInputValue());
         } catch (FormException e) {
             Log.d("FormErro", e.getMessage());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -276,5 +289,21 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
 
     protected int getRequestCode(){
         return getIntent().getExtras().getInt("requestCode", -1);
+    }
+
+    protected void showDialogErro(String title, String msg){
+        this.showDialogErro(title, msg, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+    }
+
+    protected void showDialogErro(String title, String msg, DialogInterface.OnClickListener onOk){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(title)
+              .setMessage(msg)
+              .setPositiveButton("OK", onOk)
+              .show();
     }
 }
