@@ -32,6 +32,8 @@ import org.stein.edwino.fuelsheet.util.JavaReport;
 import org.stein.edwino.fuelsheet.util.JsonParser;
 import org.stein.edwino.fuelsheet.util.ReportResult;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements TabListener, TabLayout.OnTabSelectedListener {
 
 
@@ -121,6 +123,31 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
             break;
 
+            case AbastecimentoFormActivity.CREATE_ABASTECIMENTO:
+
+                if(resultCode != RESULT_OK){
+                    Log.d("Request", "Falhou");
+                    return;
+                }
+
+                Abastecimento newModel = (Abastecimento) data.getSerializableExtra("model");
+                Abastecimento oldData[] = this.abastecimentosData;
+
+                this.abastecimentosData = new Abastecimento[this.abastecimentosData.length + 1];
+                this.abastecimentosData[0] = newModel;
+
+                for(int i = 0; i < oldData.length; i++){
+                    this.abastecimentosData[i + 1] = oldData[i];
+                }
+
+                this.updateRecyclerView();
+                this.updateReport();
+
+                Snackbar.make(this.floatingActionButton, "Abastecimento registrado com sucesso.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            break;
+
             case RequestActivity.CREATE_VEICULO:
 
                 if(resultCode != RESULT_OK)
@@ -190,10 +217,8 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     /* ********************************* Comportamento dos menus ********************************* */
 
     public void onFloatingActionButtonClicked(View view){
-//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show();
-
         Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.AbastecimentoFormActivity");
+        requestIntent.putExtra("veiculo", this.getVeiculo().getId());
         startActivityForResult(requestIntent, AbastecimentoFormActivity.CREATE_ABASTECIMENTO);
     }
 

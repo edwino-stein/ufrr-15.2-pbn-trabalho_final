@@ -8,17 +8,20 @@ import android.util.Log;
 import org.stein.edwino.fuelsheet.httprequest.HttpCallback;
 import org.stein.edwino.fuelsheet.httprequest.HttpRequest;
 import org.stein.edwino.fuelsheet.httprequest.HttpResponse;
+import org.stein.edwino.fuelsheet.models.Abastecimento;
 
 public class RequestActivity extends Activity implements HttpCallback {
 
     public static final int READ_ABASTECIMENTOS = 1;
     public static final int CREATE_VEICULO = 2;
     public static final int READ_VEICULO = 3;
+    public static final int CREATE_OR_UPDATE_ABASTECIMENTO = 4;
 
     public static final String BASE_URL = "http://192.168.2.4/webservice/index.php";
     public static final String ABASTECIMENTOS_READ_URI = "?controller=abastecimentos&action=read&veiculo={veiculo}";
     public static final String VEICULO_CREATE_URI = "?controller=veiculos&action=create&descricao={descricao}&quilometragem={quilometragem}";
     public static final String VEICULO_READ_URI = "?controller=veiculos&action=read&id={veiculo}";
+    public static final String CREATE_OR_UPDATE_ABASTECIMENTO_URI = "?controller=abastecimentos&action={action}&veiculo={veiculo}&data={data}&valorTotal={valorTotal}&litros={litros}&precoLitro={precoLitro}&quilometragem={quilometragem}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,11 @@ public class RequestActivity extends Activity implements HttpCallback {
                 request.send(this.getVeiculoReadUri(
                     getIntent().getExtras().getString("codigo")
                 ));
+            break;
+
+            case CREATE_OR_UPDATE_ABASTECIMENTO:
+                Abastecimento model = (Abastecimento) getIntent().getSerializableExtra("model");
+                request.send(this.getCreateOrUpdateAbastecimentoUrl(model));
             break;
 
             default:
@@ -105,6 +113,21 @@ public class RequestActivity extends Activity implements HttpCallback {
     protected String getVeiculoCreateUriUrl(String descricao, float quilometragem){
         String uri = VEICULO_CREATE_URI.replace("{descricao}", descricao)
                                        .replace("{quilometragem}", String.valueOf(quilometragem));
+        return BASE_URL + uri;
+    }
+
+
+    protected String getCreateOrUpdateAbastecimentoUrl(Abastecimento model){
+
+        String action = model.getId() <= 0 ? "create" : "update";
+        String uri = CREATE_OR_UPDATE_ABASTECIMENTO_URI.replace("{action}", action)
+                                                       .replace("{veiculo}", String.valueOf(model.getVeiculo()))
+                                                       .replace("{data}", model.getStringData())
+                                                       .replace("{valorTotal}", String.valueOf(model.getValorTotal()))
+                                                       .replace("{litros}", String.valueOf(model.getLitros()))
+                                                       .replace("{precoLitro}", String.valueOf(model.getPrecoLitro()))
+                                                       .replace("{quilometragem}", String.valueOf(model.getQuilometragem()));
+
         return BASE_URL + uri;
     }
 

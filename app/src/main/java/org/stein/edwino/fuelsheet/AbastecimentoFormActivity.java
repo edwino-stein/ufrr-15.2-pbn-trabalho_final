@@ -1,11 +1,18 @@
 package org.stein.edwino.fuelsheet;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
+import org.stein.edwino.fuelsheet.exceptions.FormException;
+import org.stein.edwino.fuelsheet.models.Abastecimento;
+import org.stein.edwino.fuelsheet.util.JsonParser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,8 +23,18 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
 
     public static final int CREATE_ABASTECIMENTO = 200;
 
+    private Abastecimento model;
+    private int veiculoId;
+
     private EditText dateInput;
     private DatePickerDialog datePicker;
+
+    private EditText kmTotalInput;
+    private EditText preceFuelInput;
+    private EditText amountFuelInput;
+    private EditText totalPaymentInput;
+
+    private Button submit;
 
     private static final String DATE_FORMAT_1 = "dd/MM/yyyy";
     private static final String DATE_FORMAT_2 = "yyyy-MM-dd";
@@ -26,6 +43,9 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abastecimento_form);
+
+        this.model = new Abastecimento();
+        this.veiculoId = getIntent().getIntExtra("veiculo", 0);
 
         this.dateInput = (EditText) findViewById(R.id.dateInput);
         this.dateInput.setOnClickListener(this);
@@ -41,6 +61,48 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
                 dateInput.setText(formater.format(date));
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+
+        this.kmTotalInput = (EditText) findViewById(R.id.kmTotalInput);
+        this.preceFuelInput = (EditText) findViewById(R.id.preceFuelInput);
+        this.amountFuelInput = (EditText) findViewById(R.id.amountFuelInput);
+        this.totalPaymentInput = (EditText) findViewById(R.id.totalPaymentInput);
+
+        this.submit = (Button) findViewById(R.id.submit);
+        this.submit.setOnClickListener(this);
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Log.d("IntentResult", "requestCode: "+String.valueOf(requestCode) + ", IntentResultCode: " + String.valueOf(resultCode));
+
+        switch (requestCode) {
+
+            case RequestActivity.CREATE_OR_UPDATE_ABASTECIMENTO:
+
+                if(resultCode != RESULT_OK)
+                    Log.d("Request", "Falhou");
+
+
+                String response =  data.getStringExtra("response");
+                JsonParser jsonResponse = new JsonParser(response);
+
+                if(!jsonResponse.isSuccess()){
+                    Log.d("Request", "Falhou");
+                    return;
+                }
+
+                Abastecimento model = Abastecimento.parseJson(jsonResponse.getOneData());
+                Intent intentResult = new Intent();
+                intentResult.putExtra("model", model);
+
+                setResult(RESULT_OK, intentResult);
+                finish();
+
+            break;
+
+        }
     }
 
     public void setDateInputData(Date date, String format){
@@ -50,6 +112,78 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
 
     public Date getDateInputValue(String format){
         return this.parseDate(this.dateInput.getText().toString(), format);
+    }
+
+    public float getKmTotalInputValue() throws FormException{
+
+        String sValue = this.kmTotalInput.getText().toString();
+        float fValue;
+
+        if(sValue.length() <= 0){
+            throw new FormException("O campo Quilômetros rodados deve ser preenchido");
+        }
+
+        fValue = Float.valueOf(sValue);
+
+        if(fValue <= 0){
+            throw new FormException("O campo Quilômetros rodados deve ser preenchido");
+        }
+
+        return fValue;
+    }
+
+    public float getPreceFuelInputValue() throws FormException{
+
+        String sValue = this.preceFuelInput.getText().toString();
+        float fValue;
+
+        if(sValue.length() <= 0){
+            throw new FormException("O campo Preço do combustível deve ser preenchido");
+        }
+
+        fValue = Float.valueOf(sValue);
+
+        if(fValue <= 0){
+            throw new FormException("O campo Preço do combustível deve ser preenchido");
+        }
+
+        return fValue;
+    }
+
+    public float getAmountFuelInputValue() throws FormException{
+
+        String sValue = this.amountFuelInput.getText().toString();
+        float fValue;
+
+        if(sValue.length() <= 0){
+            throw new FormException("O campo Quantidade de combustível abastecidos deve ser preenchido");
+        }
+
+        fValue = Float.valueOf(sValue);
+
+        if(fValue <= 0){
+            throw new FormException("O campo Quantidade de combustível abastecidos deve ser preenchido");
+        }
+
+        return fValue;
+    }
+
+    public float getTotalPaymentInputValue() throws FormException{
+
+        String sValue = this.totalPaymentInput.getText().toString();
+        float fValue;
+
+        if(sValue.length() <= 0){
+            throw new FormException("O campo Valor total pago deve ser preenchido");
+        }
+
+        fValue = Float.valueOf(sValue);
+
+        if(fValue <= 0){
+            throw new FormException("O campo Valor total pago deve ser preenchido");
+        }
+
+        return fValue;
     }
 
     public static Date parseDate(String dateString, String format){
@@ -74,7 +208,35 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
             if(date == null) date = Calendar.getInstance().getTime();
             this.datePicker.updateDate(date.getYear() + 1900, date.getMonth(), date.getDate());
             this.datePicker.show();
+            return;
         }
+
+        if(view == this.submit){
+            this.onSubmit();
+            return;
+        }
+    }
+
+    protected void onSubmit(){
+
+
+        this.model.setData(this.getDateInputValue(this.DATE_FORMAT_1));
+        this.model.setVeiculo(this.veiculoId);
+
+        try {
+            this.model.setQuilometragem(this.getKmTotalInputValue());
+            this.model.setPrecoLitro(this.getPreceFuelInputValue());
+            this.model.setLitros(this.getAmountFuelInputValue());
+            this.model.setValorTotal(this.getTotalPaymentInputValue());
+        } catch (FormException e) {
+            Log.d("FormErro", e.getMessage());
+        }
+
+        Log.d("teste", "Mandar dados: " + model.toString());
+        Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.RequestActivity");
+        requestIntent.putExtra("model", model);
+        startActivityForResult(requestIntent, RequestActivity.CREATE_OR_UPDATE_ABASTECIMENTO);
+
     }
 
     public void onBackPressed() {
@@ -85,5 +247,10 @@ public class AbastecimentoFormActivity extends AppCompatActivity implements View
     public void onCancel(View v){
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    public void startActivityForResult(Intent intent, int requestCode){
+        intent.putExtra("requestCode", requestCode);
+        super.startActivityForResult(intent, requestCode);
     }
 }

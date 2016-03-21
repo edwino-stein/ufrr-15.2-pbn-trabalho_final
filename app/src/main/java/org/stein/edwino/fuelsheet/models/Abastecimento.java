@@ -1,14 +1,17 @@
 package org.stein.edwino.fuelsheet.models;
 
+import android.os.Bundle;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Abastecimento {
+public class Abastecimento implements Serializable {
 
     protected int id;
 
@@ -27,7 +30,7 @@ public class Abastecimento {
     protected int veiculo;
 
     public String toString(){
-        return "id: "+this.id+"; valorTotal: "+this.valorTotal +"; litros: "+this.litros+"; precoLitro: "+this.precoLitro+"; quilometragem: "+this.quilometragem+"; data: "+this.data+"; criadoEm: "+this.criadoEm;
+        return "id: "+this.id+"; valorTotal: "+this.valorTotal +"; litros: "+this.litros+"; precoLitro: "+this.precoLitro+"; quilometragem: "+this.quilometragem+"; data: "+this.data+"; criadoEm: "+this.criadoEm+"; veiculo: "+this.veiculo;
     }
 
     public static Abastecimento parseJson(JSONObject jsonObj){
@@ -109,6 +112,11 @@ public class Abastecimento {
             e.printStackTrace();
             this.data = null;
         }
+    }
+
+    public String getStringData(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(this.data);
     }
 
     public Date getCriadoEm() {
