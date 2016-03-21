@@ -16,12 +16,14 @@ public class RequestActivity extends Activity implements HttpCallback {
     public static final int CREATE_VEICULO = 2;
     public static final int READ_VEICULO = 3;
     public static final int CREATE_OR_UPDATE_ABASTECIMENTO = 4;
+    public static final int DELETE_ABASTECIMENTO = 5;
 
     public static final String BASE_URL = "http://192.168.2.4/webservice/index.php";
     public static final String ABASTECIMENTOS_READ_URI = "?controller=abastecimentos&action=read&veiculo={veiculo}";
     public static final String VEICULO_CREATE_URI = "?controller=veiculos&action=create&descricao={descricao}&quilometragem={quilometragem}";
     public static final String VEICULO_READ_URI = "?controller=veiculos&action=read&id={veiculo}";
     public static final String CREATE_OR_UPDATE_ABASTECIMENTO_URI = "?controller=abastecimentos&action={action}&veiculo={veiculo}&id={id}&data={data}&valorTotal={valorTotal}&litros={litros}&precoLitro={precoLitro}&quilometragem={quilometragem}";
+    public static final String DELETE_ABASTECIMENTO_URI = "?controller=abastecimentos&action=delete&veiculo={veiculo}&id={id}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +46,26 @@ public class RequestActivity extends Activity implements HttpCallback {
 
             case CREATE_VEICULO:
                 request.send(this.getVeiculoCreateUriUrl(
-                    getIntent().getExtras().getString("descricao"),
-                    getIntent().getExtras().getFloat("quilometragem")
+                        getIntent().getExtras().getString("descricao"),
+                        getIntent().getExtras().getFloat("quilometragem")
                 ));
             break;
 
             case READ_VEICULO:
                 request.send(this.getVeiculoReadUri(
-                    getIntent().getExtras().getString("codigo")
+                        getIntent().getExtras().getString("codigo")
                 ));
             break;
 
             case CREATE_OR_UPDATE_ABASTECIMENTO:
                 Abastecimento model = (Abastecimento) getIntent().getSerializableExtra("model");
                 request.send(this.getCreateOrUpdateAbastecimentoUrl(model));
+            break;
+
+            case DELETE_ABASTECIMENTO:
+                int id = getIntent().getIntExtra("abastecimento", 0);
+                int veiculoid = getIntent().getIntExtra("veiculo", 0);
+                request.send(this.getDeleteAbastecimentoUrl(id, veiculoid));
             break;
 
             default:
@@ -128,6 +136,14 @@ public class RequestActivity extends Activity implements HttpCallback {
                                                        .replace("{litros}", String.valueOf(model.getLitros()))
                                                        .replace("{precoLitro}", String.valueOf(model.getPrecoLitro()))
                                                        .replace("{quilometragem}", String.valueOf(model.getQuilometragem()));
+
+        return BASE_URL + uri;
+    }
+
+    protected String getDeleteAbastecimentoUrl(int id, int veiculo){
+
+        String uri = DELETE_ABASTECIMENTO_URI.replace("{veiculo}", String.valueOf(veiculo))
+                                             .replace("{id}", String.valueOf(id));
 
         return BASE_URL + uri;
     }

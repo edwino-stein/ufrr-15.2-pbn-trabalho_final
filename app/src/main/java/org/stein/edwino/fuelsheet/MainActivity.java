@@ -1,5 +1,7 @@
 package org.stein.edwino.fuelsheet;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Debug;
 import android.support.design.widget.TabLayout;
@@ -166,6 +168,27 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
             break;
 
+            case RequestActivity.DELETE_ABASTECIMENTO:
+
+                if(resultCode != RESULT_OK){
+                    Log.d("Request", "Falhou");
+                    return;
+                }
+
+                Abastecimento _oldData[] = this.abastecimentosData;
+                this.abastecimentosData = new Abastecimento[this.abastecimentosData.length - 1];
+
+                for(int i = 1; i < _oldData.length; i++){
+                    this.abastecimentosData[i - 1] = _oldData[i];
+                }
+
+                this.updateRecyclerView();
+                this.updateReport();
+
+                Snackbar.make(this.floatingActionButton, "Abastecimento foi excluido com sucesso.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            break;
+
             case RequestActivity.CREATE_VEICULO:
 
                 if(resultCode != RESULT_OK)
@@ -231,7 +254,6 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
     }
 
-
     /* ********************************* Comportamento dos menus ********************************* */
 
     public void onFloatingActionButtonClicked(View view){
@@ -248,7 +270,30 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     }
 
     public void onDeleteAbastecimento(View view){
-        Log.d("teste", "onDeleteAbastecimento em Main");
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+        dialog.setTitle("Excluir o abastecimento")
+              .setIcon(R.drawable.ic_delete_black)
+              .setMessage("Você tem certeza que deseja excluir o registro do último abastecimento?");
+
+        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.RequestActivity");
+                requestIntent.putExtra("abastecimento", abastecimentosData[0].getId());
+                requestIntent.putExtra("veiculo", getVeiculo().getId());
+                startActivityForResult(requestIntent, RequestActivity.DELETE_ABASTECIMENTO);
+            }
+        });
+
+        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+
+        dialog.show();
     }
 
     @Override
