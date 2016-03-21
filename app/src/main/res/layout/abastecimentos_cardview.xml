@@ -104,7 +104,8 @@
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/separator"/>
+            android:layout_alignTop="@+id/separator"
+            android:onClick="onDeleteAbastecimento"/>
 
         <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
@@ -117,7 +118,8 @@
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:layout_marginRight="1dp"
-            android:layout_toStartOf="@+id/deleteAbastecimento"/>
+            android:layout_toStartOf="@+id/deleteAbastecimento"
+            android:onClick="onUpdateAbastecimento"/>
 
     </RelativeLayout>
 

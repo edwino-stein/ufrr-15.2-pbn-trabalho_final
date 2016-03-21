@@ -222,6 +222,14 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         startActivityForResult(requestIntent, AbastecimentoFormActivity.CREATE_ABASTECIMENTO);
     }
 
+    public void onUpdateAbastecimento(View view){
+        Log.d("teste", "onUpdateAbastecimento em Main");
+    }
+
+    public void onDeleteAbastecimento(View view){
+        Log.d("teste", "onDeleteAbastecimento em Main");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);

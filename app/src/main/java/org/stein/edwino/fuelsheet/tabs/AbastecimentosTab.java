@@ -4,10 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.stein.edwino.fuelsheet.MainActivity;
 import org.stein.edwino.fuelsheet.R;
 
 public class AbastecimentosTab extends PlaceholderFragment {
@@ -35,5 +37,13 @@ public class AbastecimentosTab extends PlaceholderFragment {
         this.recyclerView.setLayoutManager(llm);
 
         return this.rootView;
+    }
+
+    public void onUpdateAbastecimento(View view){
+        ((MainActivity) this.context).onUpdateAbastecimento(view);
+    }
+
+    public void onDeleteAbastecimento(View view){
+        ((MainActivity) this.context).onDeleteAbastecimento(view);
     }
 }
