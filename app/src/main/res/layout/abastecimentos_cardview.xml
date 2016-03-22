@@ -99,7 +99,7 @@
             android:padding="5dp"
             android:id="@+id/deleteAbastecimento"
             style="@style/CardButton"
-            android:text="Exculir"
+            android:text="Excluir"
             android:layout_marginRight="3dp"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"

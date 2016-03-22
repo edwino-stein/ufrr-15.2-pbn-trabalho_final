@@ -366,10 +366,6 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         if(id == R.id.action_refresh){
             this.readFromServer(this.getVeiculo());
             return true;
@@ -529,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         return null;
     }
 
-    protected void showDialogErro(String title, String msg){
+    protected void showDialogErro(String title, String msg) {
         this.showDialogErro(title, msg, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 return;
