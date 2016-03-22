@@ -18,7 +18,7 @@ public class RequestActivity extends Activity implements HttpCallback {
     public static final int CREATE_OR_UPDATE_ABASTECIMENTO = 4;
     public static final int DELETE_ABASTECIMENTO = 5;
 
-    public static final String BASE_URL = "http://192.168.2.4/webservice/index.php";
+    public static final String BASE_URL = "http://edwinos.ddns.net:8080/webservice/index.php";
     public static final String ABASTECIMENTOS_READ_URI = "?controller=abastecimentos&action=read&veiculo={veiculo}";
     public static final String VEICULO_CREATE_URI = "?controller=veiculos&action=create&descricao={descricao}&quilometragem={quilometragem}";
     public static final String VEICULO_READ_URI = "?controller=veiculos&action=read&id={veiculo}";
