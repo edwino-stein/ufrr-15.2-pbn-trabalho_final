@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d("SystemArch", NativeReport.getArch());
+        Log.d("ReportOptimized", NativeReport.isOptimized() ? "yes" : "no");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

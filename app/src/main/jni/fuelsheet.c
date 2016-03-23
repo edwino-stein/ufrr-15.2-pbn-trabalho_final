@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <jni.h>
 #include "header/NativeReport.h"
+#include "header/arch.h"
 
 JNIEXPORT jfloat JNICALL
 Java_org_stein_edwino_fuelsheet_util_NativeReport_getMaior(JNIEnv *env, jclass type, jfloatArray values_, jint size) {
@@ -68,4 +69,9 @@ Java_org_stein_edwino_fuelsheet_util_NativeReport_getRendimentoTotal(JNIEnv *env
     (*env)->ReleaseFloatArrayElements(env, litros_, litros, 0);
 
     return rendimentoTotal;
+}
+
+JNIEXPORT jstring JNICALL
+Java_org_stein_edwino_fuelsheet_util_NativeReport_getArch(JNIEnv *env, jclass type) {
+    return (*env)->NewStringUTF(env, ARCH);
 }

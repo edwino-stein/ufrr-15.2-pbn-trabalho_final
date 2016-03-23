@@ -8,6 +8,13 @@ public abstract class NativeReport {
         System.loadLibrary("fuelsheet");
     }
 
+    protected static String[] archOptimized = {
+        "armeabi-v7a/NEON (hard-float)",
+        "armeabi-v7a/NEON",
+        "armeabi-v7a (hard-float)",
+        "armeabi-v7a"
+    };
+
     public static ReportResult calc(Abastecimento[] abastecimentosData){
 
         float valorTotal[] = new float[abastecimentosData.length];
@@ -61,4 +68,16 @@ public abstract class NativeReport {
     private static native float getRendimento(float quilometros, float litros);
 
     private static native float getRendimentoTotal(float quilometros[], float litros[], int size);
+
+    public static native String getArch();
+
+    public static boolean isOptimized(){
+
+        String arch = getArch();
+
+        for(int i = 0; i < archOptimized.length; i++)
+            if(archOptimized[i].equals(arch)) return true;
+
+        return false;
+    }
 }
