@@ -31,6 +31,8 @@ public abstract class NativeReport {
             quilometragem[i] = abastecimentosData[i].getQuilometragem();
         }
 
+        report.timeStamp = System.currentTimeMillis();
+
         report.ultimo = abastecimentosData[0].getData();
 
         report.maiorValor = getMaior(valorTotal, valorTotal.length);
@@ -53,6 +55,8 @@ public abstract class NativeReport {
         report.rendimentoTotal = getRendimentoTotal(quilometragem, litros, quilometragem.length);
 
         report.proximo = report.rendimentoTotal * litros[0];
+
+        report.timeStamp -= System.currentTimeMillis();
 
         return report;
     }

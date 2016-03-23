@@ -8,6 +8,8 @@ import java.util.Date;
  */
 public class ReportResult {
 
+    public long timeStamp;
+
     public Date ultimo;
 
     public float maiorValor;

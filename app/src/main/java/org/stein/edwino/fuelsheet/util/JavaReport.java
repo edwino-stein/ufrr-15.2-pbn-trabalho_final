@@ -23,6 +23,8 @@ public abstract class JavaReport {
             quilometragem[i] = abastecimentosData[i].getQuilometragem();
         }
 
+        report.timeStamp = System.currentTimeMillis();
+
         report.ultimo = abastecimentosData[0].getData();
 
         report.maiorValor = JavaReport.getMaior(valorTotal);
@@ -45,6 +47,8 @@ public abstract class JavaReport {
         report.rendimentoTotal = JavaReport.getRendimentoTotal(quilometragem, litros);
 
         report.proximo = report.rendimentoTotal * litros[0];
+
+        report.timeStamp -= System.currentTimeMillis();
 
         return report;
     }

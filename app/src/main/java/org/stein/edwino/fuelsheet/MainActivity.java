@@ -474,6 +474,8 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
         adapter.getItem(RelatorioAdapter.PROXIMO_ABASTECIMENTO).setData(ReportResult.formatFloat(report.proximo)+" km");
 
+        Log.d("ReportTime", String.valueOf(report.timeStamp)+"ms");
+
         adapter.notifyDataSetChanged();
     }
 
