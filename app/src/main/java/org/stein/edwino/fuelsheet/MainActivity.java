@@ -32,6 +32,7 @@ import org.stein.edwino.fuelsheet.tabs.SectionsPagerAdapter;
 import org.stein.edwino.fuelsheet.tabs.TabListener;
 import org.stein.edwino.fuelsheet.util.JavaReport;
 import org.stein.edwino.fuelsheet.util.JsonParser;
+import org.stein.edwino.fuelsheet.util.NativeReport;
 import org.stein.edwino.fuelsheet.util.ReportResult;
 
 import java.util.Objects;
@@ -445,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         }
 
         this.setRelatorioInicial(false);
-        ReportResult report = JavaReport.calc(this.abastecimentosData);
+        ReportResult report =  NativeReport.calc(this.abastecimentosData);
 
         adapter.getItem(RelatorioAdapter.ULTIMO_ABASTECIMENTO).setData(ReportResult.formatData(report.ultimo));
 
