@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
 
         adapter.getItem(RelatorioAdapter.MAIOR_QUANTIDADE_COMBUSTIVEL).setData(ReportResult.formatFloat(report.maiorLitros)+" litros");
         adapter.getItem(RelatorioAdapter.MENOR_QUANTIDADE_COMBUSTIVEL).setData(ReportResult.formatFloat(report.menorLitros)+" litros");
-        adapter.getItem(RelatorioAdapter.MEDIA_QUANTIDADE_COMBUSTIVEL).setData(ReportResult.formatFloat(report.menorLitros)+" litros");
+        adapter.getItem(RelatorioAdapter.MEDIA_QUANTIDADE_COMBUSTIVEL).setData(ReportResult.formatFloat(report.mediaLitros)+" litros");
 
         adapter.getItem(RelatorioAdapter.MAIOR_PRECO).setData("R$ "+ReportResult.formatFloat(report.maiorPreco)+" por litro");
         adapter.getItem(RelatorioAdapter.MENOR_PRECO).setData("R$ "+ReportResult.formatFloat(report.menorPreco)+" por litro");

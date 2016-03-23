@@ -21,11 +21,11 @@ public class RelatorioAdapter extends RecyclerView.Adapter<RelatorioViewHolder> 
 
         "Maior quantidade de combustível em um abastecimento",
         "Menor quantidade de combustível em um abastecimento",
-        "Média de combustível em abastecimentos",
+        "Média de quantidade de combustível em abastecimentos",
 
         "Maior preço do combustível",
-        "Menor preço da combustível",
-        "Média do preço da combustível",
+        "Menor preço do combustível",
+        "Média do preço do combustível",
 
         "Quilômetros rodados até o último abastecimento",
         "Quilômetros total rodados pelo veiculo",
