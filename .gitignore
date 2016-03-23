@@ -5,6 +5,8 @@
 /.idea/libraries
 /.idea/.name
 /build
+/app/src/main/libs
+/app/src/main/obj
 /captures
 .~lock.*
 .o
