@@ -1,7 +1,6 @@
 package org.stein.edwino.fuelsheet.httprequest;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.net.URLEncoder;
 

@@ -3,9 +3,6 @@ package org.stein.edwino.fuelsheet.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by edwino on 11/03/16.
- */
 public class VeiculoModel {
 
     public int id;

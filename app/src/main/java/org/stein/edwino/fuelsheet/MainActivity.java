@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Debug;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -35,8 +34,6 @@ import org.stein.edwino.fuelsheet.util.JavaReport;
 import org.stein.edwino.fuelsheet.util.JsonParser;
 import org.stein.edwino.fuelsheet.util.NativeReport;
 import org.stein.edwino.fuelsheet.util.ReportResult;
-
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements TabListener, TabLayout.OnTabSelectedListener {
 

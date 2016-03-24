@@ -1,7 +1,6 @@
 package org.stein.edwino.fuelsheet.httprequest;
 
 import android.os.AsyncTask;
-import android.os.Debug;
 import android.util.Log;
 
 import org.apache.http.client.ClientProtocolException;

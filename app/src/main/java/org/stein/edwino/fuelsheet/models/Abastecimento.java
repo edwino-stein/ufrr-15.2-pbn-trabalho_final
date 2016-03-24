@@ -1,7 +1,5 @@
 package org.stein.edwino.fuelsheet.models;
 
-import android.os.Bundle;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

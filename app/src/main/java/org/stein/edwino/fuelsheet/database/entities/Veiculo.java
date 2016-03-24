@@ -1,6 +1,5 @@
 package org.stein.edwino.fuelsheet.database.entities;
 
-
 import android.content.ContentValues;
 import android.database.Cursor;
 

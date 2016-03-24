@@ -1,9 +1,7 @@
 package org.stein.edwino.fuelsheet.util;
 
-
 import org.stein.edwino.fuelsheet.models.Abastecimento;
 
-import java.util.Date;
 
 public abstract class JavaReport {
 

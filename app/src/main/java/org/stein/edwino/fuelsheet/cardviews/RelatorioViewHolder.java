@@ -6,9 +6,6 @@ import android.widget.TextView;
 
 import org.stein.edwino.fuelsheet.R;
 
-/**
- * Created by edwino on 20/03/16.
- */
 public class RelatorioViewHolder extends RecyclerView.ViewHolder{
 
     public TextView label;

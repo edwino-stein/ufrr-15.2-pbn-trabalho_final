@@ -3,9 +3,6 @@ package org.stein.edwino.fuelsheet.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by edwino on 20/03/16.
- */
 public class ReportResult {
 
     public long timeStamp;
