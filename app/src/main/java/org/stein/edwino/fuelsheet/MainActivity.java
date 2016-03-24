@@ -3,6 +3,7 @@ package org.stein.edwino.fuelsheet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Debug;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -375,6 +376,12 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
             return true;
         }
 
+        if(id == R.id.about){
+            Intent requestIntent = new Intent("org.stein.edwino.fuelsheet.AboutActivity");
+            startActivityForResult(requestIntent, 0);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -449,7 +456,16 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
         }
 
         this.setRelatorioInicial(false);
-        ReportResult report =  NativeReport.calc(this.abastecimentosData);
+        ReportResult report = null;
+
+        if(this.useNative()){
+            Log.d("ReportType", "Native");
+            report = NativeReport.calc(this.abastecimentosData);
+        }
+        else{
+            Log.d("ReportType", "Java");
+            report = JavaReport.calc(this.abastecimentosData);
+        }
 
         adapter.getItem(RelatorioAdapter.ULTIMO_ABASTECIMENTO).setData(ReportResult.formatData(report.ultimo));
 
@@ -545,5 +561,11 @@ public class MainActivity extends AppCompatActivity implements TabListener, TabL
                 .setMessage(msg)
                 .setPositiveButton("OK", onOk)
                 .show();
+    }
+
+    private boolean useNative(){
+        SharedPreferences settings = getSharedPreferences("FluelSheet", 0);
+        boolean useNative = settings.getBoolean("useNative", false);
+        return useNative;
     }
 }
