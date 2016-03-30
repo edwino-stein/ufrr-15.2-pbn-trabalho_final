@@ -54,7 +54,7 @@ public class AbastecimentosViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void setData(Date dataView) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("d MMMM");
         this.dataView.setText(format.format(dataView));
     }
 

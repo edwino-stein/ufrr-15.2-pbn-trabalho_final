@@ -33,11 +33,13 @@
             android:layout_below="@+id/valorTotalLabel"
             android:layout_alignStart="@+id/valorTotalLabel" />
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quantidade de combustível"
-            android:id="@+id/litrosLabel"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="dd/mm/aaaa"
+            android:id="@+id/data"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_alignParentTop="true"
@@ -50,8 +52,8 @@
             android:text="00,00 litros"
             android:id="@+id/litros"
             android:layout_marginTop="5dp"
-            android:layout_below="@+id/litrosLabel"
-            android:layout_alignEnd="@+id/litrosLabel"/>
+            android:layout_below="@+id/data"
+            android:layout_alignEnd="@+id/data"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,20 +72,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="000,0 KM"
             android:id="@+id/quilometragem"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_alignTop="@+id/precoLitro"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="dd/mm/aaaa"
-            android:id="@+id/data"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_below="@+id/valorTotal"
-            android:layout_alignEnd="@+id/litros" />
+
 
         <View
             android:layout_width="match_parent"
@@ -103,8 +97,8 @@
             android:layout_marginRight="3dp"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
-            android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/separator"
+            android:layout_toEndOf="@+id/editAbastecimento"
             android:onClick="onDeleteAbastecimento"/>
 
         <android.support.v7.widget.AppCompatButton
@@ -117,8 +111,8 @@
             android:padding="5dp"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
-            android:layout_marginRight="1dp"
-            android:layout_toStartOf="@+id/deleteAbastecimento"
+            android:layout_marginLeft="2dp"
+            android:layout_alignParentStart="true"
             android:onClick="onUpdateAbastecimento"/>
 
     </RelativeLayout>
