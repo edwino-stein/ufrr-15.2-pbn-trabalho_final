@@ -21,7 +21,7 @@ public abstract class JavaReport {
             quilometragem[i] = abastecimentosData[i].getQuilometragem();
         }
 
-        report.timeStamp = System.currentTimeMillis();
+        report.timeStamp = System.nanoTime();
 
         report.ultimo = abastecimentosData[0].getData();
 
@@ -46,7 +46,7 @@ public abstract class JavaReport {
 
         report.proximo = report.rendimentoTotal * litros[0];
 
-        report.timeStamp -= System.currentTimeMillis();
+        report.timeStamp = (System.nanoTime() - report.timeStamp)/1000;
 
         return report;
     }
